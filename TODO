@@ -1,0 +1,29 @@
+@high:
+    ✔ initialize the project --> generate the package.json @done(24-04-08 10:31)
+    ✔ configure the package.json @started(24-04-08 10:31) @done(24-04-08 10:56) @lasted(25m49s)
+    ✔ inizilize the tsc --> generate the tsconfig.json @started(24-04-08 10:31) @done(24-04-08 10:57) @lasted(26m)
+    ✔ configure the tsconfig.json @started(24-04-08 10:31) @done(24-04-08 10:57) @lasted(26m6s)
+    ✔ create src dir in the main root of your project @started(24-04-08 10:31) @done(24-04-08 11:06) @lasted(35m46s)
+    ✔ create an app.ts file in src, with the link to different routes on it @done(24-04-08 11:06)
+    ✔ create a server.ts file in src, with a link with the acessPort and database port @done(24-04-08 11:11)
+    ✔ create an env.ts file in src, that contains the sensible variables useful to developers @done(24-04-08 12:13)
+
+    
+@high: use Zod?
+    ☐ create different branches regarding to every task;
+    ☐ create entities validations;
+    ☐ create interfaces from validations;
+    ☐ create models from interfaces;
+    ☐ create routes;
+    ☐ create controllers;
+    ☐ create services;
+
+@high: auth routes
+    ☐ register User (post)
+    ☐ register Admin, with a wishlist logic (post)
+    ☐ User/ Admin login (post)
+    ☐ User/ Admin logout (get)
+    ☐ User/ Admin auth info (get)
+
+@high: product routes
+    ☐ 
