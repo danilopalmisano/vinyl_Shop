@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import { z } from "zod";
-import { ZProductSchema } from "./product.validation.js";
 
 const roleEnum = ["user", "admin"] as const;
 
@@ -30,7 +29,6 @@ export const ZUserSchema = z.object({
 export const ZOptionalUser = ZUserSchema.partial();
 export type IOptionalUser = z.infer<typeof ZOptionalUser>;
 export interface IUser extends z.infer<typeof ZUserSchema> {
-	//add id just to the interface, not necessary for guest cart
 	_id?: mongoose.Types.ObjectId;
 }
 
