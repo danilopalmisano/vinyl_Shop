@@ -1,8 +1,7 @@
 import mongoose from "mongoose";
 import { z } from "zod";
-import { ZProductSchema } from "./product.validation.js";
 
-const roleEnum = ["user", "admin"] as const;
+export const roleEnum = ["user", "admin"] as const;
 
 export const ZLoginSchema = z.object({
 	email: z.string().toLowerCase().email(),
@@ -18,7 +17,7 @@ export const ZUserSchema = z.object({
 			z.object({
 				productId: z.string(),
 				quantity: z.number().positive(),
-			}),
+			})
 		)
 		.optional(),
 	orders: z.array(z.string()).optional(),
