@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { ILogin } from "../types/login.type";
+import { ILogin } from "../validation/user.validation";
 
 const LoginSchema = new mongoose.Schema<ILogin>(
 	{

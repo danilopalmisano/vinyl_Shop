@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
-import { IUser } from "../types/user.type";
+import { IUser } from "../validation/user.validation";
+import { hashStuff } from "../utility/commonAuthFunction";
 
 const userSchema = new mongoose.Schema<IUser>({
 	username: {
@@ -17,7 +18,7 @@ const userSchema = new mongoose.Schema<IUser>({
 		required: false,
 	},
 	cart: {
-		tyepe: mongoose.Schema.Types.ObjectId,
+		type: mongoose.Schema.Types.ObjectId,
 		ref: "cart",
 		required: true,
 	},
