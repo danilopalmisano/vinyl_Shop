@@ -22,8 +22,8 @@
     ☐ create product logic @started(24-04-08 15:28)
     
 @high: api/product routes
-    ☐ retrieve all products (get) @started(24-04-08 16:38)
-    ☐ retrieve product by id (get) @started(24-04-08 16:38)
+    ✔ retrieve all products (get) @started(24-04-08 16:38) @done(24-04-08 17:05) @lasted(27m53s)
+    ✔ retrieve product by id (get) @started(24-04-08 16:38) @done(24-04-08 17:05) @lasted(27m56s)
     ☐ permit to Admin to add a new product (post) @started(24-04-08 16:38)
     ☐ permit to Admin to update an existing product info (put) @started(24-04-08 16:38)
     ☐ permit to Admin to delete a product (delete) @started(24-04-08 16:38)
