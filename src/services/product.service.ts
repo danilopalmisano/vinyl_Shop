@@ -1,4 +1,5 @@
-import { IProduct } from '../validation/product.validation';
+import { Product } from "../models/product.model";
+import { IProduct } from "../validation/product.validation";
 
 //show Products
 export const getProducts = async (): Promise<IProduct[]> => {
@@ -17,7 +18,7 @@ export const createProduct = async (product: IProduct): Promise<IProduct> => {
 
 //update Product (by Admin)
 export const upProduct = async (
-	product: IProduct
+	product: IProduct,
 ): Promise<IProduct | null> => {
 	return await Product.findByIdAndUpdate(product._id, product, { new: true });
 };
