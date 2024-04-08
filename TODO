@@ -11,7 +11,7 @@
     
 @high: use Zod?
     ✔ create different branches regarding to every task; @done(24-04-08 14:23)
-    ☐ create entities validations; @started(24-04-08 16:38)
+    ✔ create entities validations; @started(24-04-08 16:38) @done(24-04-08 17:06) @lasted(28m50s)
     ☐ create interfaces from validations; @started(24-04-08 16:38)
     ☐ create models from interfaces; @started(24-04-08 16:38)
     ☐ create routes; @started(24-04-08 16:38)
