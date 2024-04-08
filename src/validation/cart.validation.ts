@@ -1,4 +1,3 @@
-import zodSchema from "@zodyac/zod-mongoose";
 import mongoose from "mongoose";
 import { z } from "zod";
 
@@ -15,18 +14,10 @@ export const ZCartSchema = z.object({
 	totalPrice: z.number().positive().optional(),
 });
 
-// MongoModel
-const LineItemModel = zodSchema(ZLineItemSchema);
-export const LineItem = mongoose.model('LineItem', LineItemModel);
-
 //Interface
 export interface ILineItem extends z.infer<typeof ZLineItemSchema> {
 	_id?: mongoose.Types.ObjectId;
 }
-
-// MongoModel
-const CartModel = zodSchema(ZCartSchema);
-export const Cart = mongoose.model('Cart', CartModel);
 
 //Interface
 export interface ICart extends z.infer<typeof ZCartSchema> {

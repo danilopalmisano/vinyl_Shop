@@ -1,4 +1,3 @@
-import zodSchema from "@zodyac/zod-mongoose";
 import mongoose from "mongoose";
 import { z } from "zod";
 // import { ZCategorySchema } from "./category.validation";
@@ -16,9 +15,6 @@ export const ZProductSchema = z.object({
 });
 
 export const ZOptionalProductSchema = ZProductSchema.partial();
-// MongoModel
-const ProductModel = zodSchema(ZProductSchema);
-export const Product = mongoose.model("Product", ProductModel);
 
 //Interface
 export interface IProduct extends z.infer<typeof ZProductSchema> {
