@@ -1,7 +1,7 @@
 import zodSchema from "@zodyac/zod-mongoose";
 import mongoose from "mongoose";
 import { z } from "zod";
-import { ZCategorySchema } from "./category.validation";
+// import { ZCategorySchema } from "./category.validation";
 
 const stockEnum = ["in stock", "out of stock", "discontinued"] as const;
 
@@ -12,7 +12,7 @@ export const ZProductSchema = z.object({
 	images: z.array(z.string()).optional(),
 	stockQuantity: z.number().positive(),
 	stockStatus: z.enum(stockEnum).default("out of stock"),
-	category: ZCategorySchema.partial(),
+	category: z.array(z.string()).optional(),
 });
 
 export const ZOptionalProductSchema = ZProductSchema.partial();

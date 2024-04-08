@@ -1,0 +1,48 @@
+import { z } from "zod";
+import { ZCartSchema } from "./cart.validation.js";
+import zodSchema from "@zodyac/zod-mongoose";
+import mongoose from "mongoose";
+
+const statusEnum = [
+	"order created",
+	"shipped",
+	"delivered",
+	"cancelled",
+] as const;
+
+export const ZOrderSchema = z.object({
+	shippingAddress: z.object({
+		addressLine1: z.string(),
+		addressLine2: z.string().optional(),
+		city: z.string(),
+		state: z.string(),
+		zipCode: z.string(),
+		country: z.string(),
+	}),
+	billingAddress: z.object({
+		addressLine1: z.string().optional(),
+		addressLine2: z.string().optional(),
+		city: z.string().optional(),
+		state: z.string().optional(),
+		zipCode: z.string().optional(),
+		country: z.string().optional(),
+	}),
+	paymentDetails: z.object({
+		type: z.string(), // e.g., credit card, debit card
+		maskedNumber: z.string(), // Last 4 digits of card number
+	}),
+	cart: z.array(ZCartSchema),
+	status: z.enum(statusEnum).default("order created"),
+	createdAt: z.date().default(() => new Date()),
+});
+
+export const ZOptionalOrderSchema = ZOrderSchema.partial();
+
+// MongoModel
+const OrderModel = zodSchema(ZOrderSchema);
+export const Order = mongoose.model("Order", OrderModel);
+
+//Interface
+export interface IOrder extends z.infer<typeof ZOrderSchema> {
+	_id?: mongoose.Types.ObjectId;
+}
