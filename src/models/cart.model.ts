@@ -10,7 +10,7 @@ const cartSchema = new mongoose.Schema<ICart>(
 		lines: [
 			{
 				type: mongoose.Schema.Types.ObjectId,
-				ref: "lineId",
+				ref: "lineItem",
 			},
 		],
 		totalPrice: {
