@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
-import { z } from "zod";
-import { ZProductSchema } from "./product.validation.js";
+import { z } from 'zod';
 
 const roleEnum = ["user", "admin"] as const;
 
