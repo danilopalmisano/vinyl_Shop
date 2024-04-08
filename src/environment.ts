@@ -1,17 +1,17 @@
-//ENVIRONMENT --> permette di poter settare vari ambienti
+// ENVIRONMENT --> allows to set different environments
 
 import { env } from "./utility/env";
 
-//enum è un modo per creare delle variabili che devono essere fisse
+// enum is a way to create variables that must be fixed
 enum Environments {
-	LOCAL = "local", //se siamo in locale
-	DEV = "dev", //se siamo in sviluppo
-	PROD = "prod", //se siamo in produzione
+	LOCAL = "local", // if we are in local
+	DEV = "dev", // if we are in development
+	PROD = "prod", // if we are in production
 }
 
-//class Environment, tramite incapsulamento della programmazione ad oggetti
-//i dati e i metodi interni dell'oggetto sono nascosti all'utente
-//possono essere modificati ed esposti all'esterno solo con opportune interfacce definite internamente alla classe (metodi)
+// class Environment, through object-oriented programming encapsulation
+// the data and methods within the object are hidden from the user
+// they can be modified and exposed outside only through appropriate interfaces defined internally to the class (methods)
 class Environment {
 	private environment: String;
 
