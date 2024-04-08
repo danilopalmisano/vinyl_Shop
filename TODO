@@ -19,7 +19,7 @@
     ☐ create controllers;
     
 @high: product
-    ☐ create product logic
+    ☐ create product logic @started(24-04-08 15:28)
     
 @high: api/product routes
     ☐ retrieve all products (get)
