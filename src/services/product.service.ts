@@ -1,7 +1,7 @@
 import { IProduct } from '../validation/product.validation';
 
 //show Products
-export const showProducts = async (): Promise<IProduct[]> => {
+export const getProducts = async (): Promise<IProduct[]> => {
 	return await Product.find();
 };
 
@@ -16,13 +16,13 @@ export const createProduct = async (product: IProduct): Promise<IProduct> => {
 };
 
 //update Product (by Admin)
-export const updateProduct = async (
+export const upProduct = async (
 	product: IProduct
 ): Promise<IProduct | null> => {
 	return await Product.findByIdAndUpdate(product._id, product, { new: true });
 };
 
 //delete Product (by Admin)
-export const deleteProduct = async (id: string): Promise<IProduct | null> => {
+export const delProduct = async (id: string): Promise<IProduct | null> => {
 	return await Product.findByIdAndDelete(id);
 };
