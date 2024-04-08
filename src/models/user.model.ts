@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { IUser } from "../validation/user.validation";
+import { IUser, roleEnum } from "../validation/user.validation";
 import { hashStuff } from "../utility/commonAuthFunction";
 
 const userSchema = new mongoose.Schema<IUser>({
@@ -21,6 +21,19 @@ const userSchema = new mongoose.Schema<IUser>({
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "cart",
 		required: true,
+	},
+	orders: {
+		type: String,
+		required: false,
+	},
+	guestId: {
+		type: String,
+		required: false,
+	},
+	role: {
+		type: String,
+		enum: ["user", "admin"],
+		default: "user",
 	},
 });
 
