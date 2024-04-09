@@ -1,4 +1,11 @@
 import { Router } from "express";
+import {
+	showOrders,
+	getOrderById,
+	createOrder,
+	updateOrderStatus,
+	deletedOrderStatus,
+} from "../controllers/order.controller";
 
 export const router = Router();
 
