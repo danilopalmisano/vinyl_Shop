@@ -18,9 +18,10 @@ export const createProduct = async (product: IProduct): Promise<IProduct> => {
 
 //update Product (by Admin)
 export const upProduct = async (
+	_id: string,
 	product: IProduct,
 ): Promise<IProduct | null> => {
-	return await Product.findByIdAndUpdate(product._id, product, { new: true });
+	return await Product.findByIdAndUpdate(_id, product, { new: true });
 };
 
 //delete Product (by Admin)

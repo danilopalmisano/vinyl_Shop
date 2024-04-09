@@ -1,0 +1,8 @@
+PUT http://localhost:3000/api/products/6614e967e140419a7fa22d24
+Content-Type: application/json
+
+{
+    "stockQuantity": 1,
+    "stockStatus": "in stock",
+    "category": ["funk","liscio"]
+}
