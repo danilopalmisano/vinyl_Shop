@@ -9,19 +9,11 @@ export const ZLoginSchema = z.object({
 	loggedIn: z.boolean().optional().default(false),
 });
 export const ZUserSchema = z.object({
+	name: z.string().min(1),
+	surname: z.string().min(1),
 	username: z.string().min(1),
 	login: ZLoginSchema.partial(),
 	wishlist: z.array(z.string()).optional(), // Array of product IDs
-<<<<<<< HEAD
-	/*cart: z
-		.array(
-			z.object({
-				productId: z.string(),
-				quantity: z.number().positive(),
-			}),
-		)
-		.optional(),*/
-=======
 	// cart: z
 	// 	.array(
 	// 		z.object({
@@ -30,7 +22,6 @@ export const ZUserSchema = z.object({
 	// 		}),
 	// 	)
 	// 	.optional(),
->>>>>>> cart-asset
 	orders: z.array(z.string()).optional(),
 	guestId: z.string().optional(),
 	role: z.enum(roleEnum).default('user'),

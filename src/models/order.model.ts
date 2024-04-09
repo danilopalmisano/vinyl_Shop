@@ -1,7 +1,5 @@
 import mongoose from "mongoose";
-import { IOrder, statusEnum } from "../validation/order.validation";
-import { stockEnum } from "../validation/product.validation";
-import { date } from "zod";
+import { IOrder, statusEnum } from '../validation/order.validation';
 
 const orderSchema = new mongoose.Schema<IOrder>(
 	{
@@ -9,40 +7,40 @@ const orderSchema = new mongoose.Schema<IOrder>(
 			adressLine1: {
 				type: String,
 			},
-			addressLine2: {
+			// addressLine2: {
+			// 	type: String,
+			// },
+			zipCode: {
 				type: String,
 			},
 			city: {
 				type: String,
 			},
-			state: {
-				type: String,
-			},
-			zipCode: {
-				type: String,
-			},
 			country: {
 				type: String,
 			},
-		},
-		paymentDetails: {
-			type: {
-				type: String,
-			},
-			maskedNumber: {
+			state: {
 				type: String,
 			},
 		},
+		// paymentDetails: {
+		// 	type: {
+		// 		type: String,
+		// 	},
+		// 	maskedNumber: {
+		// 		type: String,
+		// 	},
+		// },
 		cart: [
 			{
 				type: mongoose.Schema.Types.ObjectId,
-				ref: "cart",
+				ref: 'cart',
 			},
 		],
 		status: {
 			type: String,
 			enum: statusEnum,
-			default: "order created",
+			default: 'order created',
 		},
 	},
 	{ timestamps: true }
