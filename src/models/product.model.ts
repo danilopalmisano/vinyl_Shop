@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { IProduct } from "../validation/product.validation";
+import { IProduct, stockEnum } from "../validation/product.validation";
 
 const ProductSchema = new mongoose.Schema<IProduct>(
 	{
@@ -25,7 +25,7 @@ const ProductSchema = new mongoose.Schema<IProduct>(
 
 		stockStatus: {
 			type: String,
-			enum: ["in stock", "out of stock", "discontinued"],
+			enum: stockEnum,
 			default: "out of stock",
 		},
 		category: [
