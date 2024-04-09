@@ -3,19 +3,16 @@ import { ICart } from '../validation/cart.validation';
 
 //get UserCart
 export const getUserCart = async (userId: string): Promise<ICart | null> => {
-	return await Cart.findOne({ user: userId });
+	const cart = await Cart.findOne({ user: userId });
+	return cart || null; // This returns an empty object if cart is null
 };
 
 //add a product to a User cart
-export const addToUserCart = async (
-	userId: string,
-	productId: string
-): Promise<ICart | null> => {
-	return await Cart.findOneAndUpdate(
-		{ user: userId },
-		{ $push: { 'lines.productId': productId } },
-		{ new: true }
-	);
+export const addToUserCart = async (data: ICart): Promise<ICart> => {
+	const saro = await Cart.create(data);
+	console.log(saro);
+
+	return saro;
 };
 
 //remove a product from a User cart
