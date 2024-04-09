@@ -18,10 +18,10 @@ export const ZOrderSchema = z.object({
 		zipCode: z.string(),
 		country: z.string(),
 	}),
-	paymentDetails: z.object({
+	/*paymentDetails: z.object({
 		type: z.string(), // e.g., credit card, debit card
 		maskedNumber: z.string(), // Last 4 digits of card number
-	}),
+	}),*/
 	cart: z.array(ZCartSchema),
 	status: z.enum(statusEnum).default("order created"),
 });
