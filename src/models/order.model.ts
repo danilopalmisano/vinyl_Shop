@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { IOrder, statusEnum } from '../validation/order.validation';
+import { IOrder, statusEnum } from "../validation/order.validation";
 
 const orderSchema = new mongoose.Schema<IOrder>(
 	{
@@ -15,7 +15,7 @@ const orderSchema = new mongoose.Schema<IOrder>(
 			},
 			// addressLine2: {
 			// 	type: String,
-			// },
+			//},
 			zipCode: {
 				type: String,
 			},
@@ -40,14 +40,15 @@ const orderSchema = new mongoose.Schema<IOrder>(
 		cart: [
 			{
 				type: mongoose.Schema.Types.ObjectId,
-				ref: 'cart',
+				ref: "cart",
 			},
 		],
 		status: {
 			type: String,
 			enum: statusEnum,
-			default: 'order created',
+			default: "order created",
 		},
 	},
 	{ timestamps: true }
 );
+export const Order = mongoose.model("Order", orderSchema);

@@ -1,12 +1,12 @@
-import { z } from "zod";
-import { ZCartSchema } from "./cart.validation.js";
-import mongoose from "mongoose";
+import { z } from 'zod';
+import { ZCartSchema } from './cart.validation.js';
+import mongoose from 'mongoose';
 
 export const statusEnum = [
-	"order created",
-	"shipped",
-	"delivered",
-	"cancelled",
+	'order created',
+	'shipped',
+	'delivered',
+	'cancelled',
 ] as const;
 
 export const ZOrderSchema = z.object({

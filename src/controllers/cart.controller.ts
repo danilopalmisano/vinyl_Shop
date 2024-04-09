@@ -1,10 +1,10 @@
-import { Request, Response } from 'express';
+import { Request, Response } from "express";
 import {
 	addToUserCart,
 	emptyUserCart,
 	getUserCart,
 	removeFromUserCart,
-} from '../services/cart.service';
+} from "../services/cart.service";
 
 //show User cart
 export const getCart = async (req: Request, res: Response) => {
@@ -12,7 +12,7 @@ export const getCart = async (req: Request, res: Response) => {
 		const cart = await getUserCart(req.params.id); //to implement later!
 		res.status(200).json(cart);
 	} catch (error) {
-		res.status(404).json({ message: 'cart not found' });
+		res.status(404).json({ message: "cart not found" });
 	}
 };
 
@@ -22,7 +22,7 @@ export const addProductToCart = async (req: Request, res: Response) => {
 		const cart = await addToUserCart(req.params.id, req.params.productId); //to implement later!
 		res.status(200).json(cart);
 	} catch (error) {
-		res.status(404).json({ message: 'cart not found' });
+		res.status(404).json({ message: "cart not found" });
 	}
 };
 
@@ -35,7 +35,7 @@ export const removeProductFromCart = async (req: Request, res: Response) => {
 		); //to implement later!
 		res.status(200).json(cart);
 	} catch (error) {
-		res.status(404).json({ message: 'cart not found' });
+		res.status(404).json({ message: "cart not found" });
 	}
 };
 
@@ -45,6 +45,6 @@ export const emptyCart = async (req: Request, res: Response) => {
 		const cart = await emptyUserCart(req.params.id); //to implement later!
 		res.status(200).json(cart);
 	} catch (error) {
-		res.status(404).json({ message: 'cart not found' });
+		res.status(404).json({ message: "cart not found" });
 	}
 };
