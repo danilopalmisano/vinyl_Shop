@@ -5,7 +5,9 @@ import {
 	getOrders,
 	orderStatusHandler,
 } from "../services/order.service";
+import { ExtendedRequest } from '../middleware/authMiddleware';
 
+//show all orders
 export const showOrders = async (req: Request, res: Response) => {
 	try {
 		const order = await getOrders();
@@ -15,6 +17,7 @@ export const showOrders = async (req: Request, res: Response) => {
 	}
 };
 
+//show order by id
 export const getOrderById = async (req: Request, res: Response) => {
 	try {
 		const orderId = req.body?.orderId;
@@ -32,6 +35,7 @@ export const getOrderById = async (req: Request, res: Response) => {
 	}
 };
 
+//create new order
 export const createOrder = async (req: ExtendedRequest, res: Response) => {
 	try {
 		if (req.user?._id) {
@@ -49,6 +53,7 @@ export const createOrder = async (req: ExtendedRequest, res: Response) => {
 	}
 };
 
+//update order status
 export const updateOrderStatus = async (req: Request, res: Response) => {
 	try {
 		const orderStatus = await orderStatusHandler(
@@ -61,6 +66,7 @@ export const updateOrderStatus = async (req: Request, res: Response) => {
 	}
 };
 
+//delete order status
 export const deletedOrderStatus = async (req: Request, res: Response) => {
 	try {
 		const orderStatus = await orderStatusHandler(
