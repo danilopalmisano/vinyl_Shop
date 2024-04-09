@@ -4,7 +4,7 @@ import {
 	emptyUserCart,
 	getUserCart,
 	removeFromUserCart,
-} from "../services/cart.service";
+} from '../services/cart.service';
 import { ExtendedRequest } from '../middleware/authMiddleware';
 import { ICart } from '../validation/cart.validation';
 
@@ -12,10 +12,10 @@ import { ICart } from '../validation/cart.validation';
 export const getCart = async (req: ExtendedRequest, res: Response) => {
 	try {
 		const userById = req.user?._id;
-		console.log(userById);
+
 		if (userById) {
 			const userCart = await getUserCart(userById as string); //to implement later!
-			console.log(userCart);
+
 			res.status(200).json(userCart);
 		} else {
 			res.status(404).json({
@@ -30,8 +30,8 @@ export const getCart = async (req: ExtendedRequest, res: Response) => {
 //add product to a User cart
 export const addProductToCart = async (req: ExtendedRequest, res: Response) => {
 	try {
-		const userId = req.user?._id;
-		console.log(userId);
+		const userId = req.user?._id as string;
+
 		const productId = req.params.id;
 		if (userId) {
 			// Create a new cart with the provided items
@@ -39,18 +39,8 @@ export const addProductToCart = async (req: ExtendedRequest, res: Response) => {
 				userId,
 				lines: [{ productId: productId, quantity: 1 }],
 			};
-			console.log({ newCart: newCart.lines });
-			const newsaroCart = {
-				userId: 'user_id_here',
-				lines: [
-					{
-						productId: 'product_id_here',
-						quantity: 1,
-					},
-				],
-			};
-			const createCart = await addToUserCart(newsaroCart);
-			console.log({ createCart: createCart });
+
+			const createCart = await addToUserCart(newCart);
 			if (!createCart) {
 				return res.status(500).json({
 					message: 'Error adding items to cart',
@@ -66,26 +56,39 @@ export const addProductToCart = async (req: ExtendedRequest, res: Response) => {
 	}
 };
 
-
 //remove product from a User cart
-export const removeProductFromCart = async (req: Request, res: Response) => {
+export const removeProductFromCart = async (
+	req: ExtendedRequest,
+	res: Response
+) => {
 	try {
-		const cart = await removeFromUserCart(
-			req.params.id,
-			req.params.productId
-		); //to implement later!
-		res.status(200).json(cart);
+		const userId = req.user?._id as string;
+		const productId = req.params.productId;
+		const updatedCart = await removeFromUserCart(userId, productId);
+		if (updatedCart) {
+			res.json({
+				message: 'Product removed from cart',
+				cart: updatedCart,
+			});
+		} else {
+			res.status(404).json({ message: 'Cart not found' });
+		}
 	} catch (error) {
-		res.status(404).json({ message: "cart not found" });
+		console.error(error);
+		res.status(500).json({ message: 'Internal server error' });
 	}
 };
 
 //empty a User cart
-export const emptyCart = async (req: Request, res: Response) => {
+export const emptyCart = async (req: ExtendedRequest, res: Response) => {
 	try {
-		const cart = await emptyUserCart(req.params.id); //to implement later!
-		res.status(200).json(cart);
+		const userId = req.user?._id as string;
+		const cart = await emptyUserCart(userId); //to implement later!
+
+		res.status(200).json({
+			message: 'Cart emptied',
+		});
 	} catch (error) {
-		res.status(404).json({ message: "cart not found" });
+		res.status(404).json({ message: 'cart not found' });
 	}
 };

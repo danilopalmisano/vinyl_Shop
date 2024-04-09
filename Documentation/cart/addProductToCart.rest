@@ -1,6 +1,6 @@
 POST http://localhost:3000/api/cart/add/661502b97fe20da8c4ff99a6 HTTP/1.1
 # add product id to the url
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MTU0NDU4MTdkNTljOGE1Mzg4OTUzNSIsImlhdCI6MTcxMjY2OTk1NX0.8FOL2YZ01yyp9ML5yy3O7vEN1sSy2hrGDx3RlRQxFSg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MTU0NDU4MTdkNTljOGE1Mzg4OTUzNSIsImlhdCI6MTcxMjY4MzM5N30.--jGzIkhrovjBXVTyF240IcJqiNwCKRf0uP6cXzz3fo
 
 ###

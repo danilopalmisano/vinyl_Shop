@@ -1,7 +1,4 @@
 DELETE http://localhost:3000/api/cart/clear HTTP/1.1
-# to add the user id
-Content-Type: application/json
-Application: Bearer
-# to add accessToken
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MTU0NDU4MTdkNTljOGE1Mzg4OTUzNSIsImlhdCI6MTcxMjY4MzM5N30.--jGzIkhrovjBXVTyF240IcJqiNwCKRf0uP6cXzz3fo
 
 ###
