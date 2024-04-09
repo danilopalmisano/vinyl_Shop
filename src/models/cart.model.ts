@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { ICart } from "../validation/cart.validation";
+import { lineItemSchema } from './line.model';
 
 const cartSchema = new mongoose.Schema<ICart>(
 	{
@@ -9,8 +10,8 @@ const cartSchema = new mongoose.Schema<ICart>(
 
 		lines: [
 			{
-				type: mongoose.Schema.Types.ObjectId,
-				ref: "lineItem",
+				type: lineItemSchema,
+				ref: 'lineItem',
 			},
 		],
 		totalPrice: {

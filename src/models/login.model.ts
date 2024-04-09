@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { ILogin } from "../validation/user.validation";
 
-const LoginSchema = new mongoose.Schema<ILogin>(
+export const LoginSchema = new mongoose.Schema<ILogin>(
 	{
 		email: {
 			type: String,

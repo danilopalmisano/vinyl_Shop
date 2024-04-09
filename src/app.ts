@@ -1,7 +1,6 @@
 import express from "express";
 import { router as productApi } from "./routes/product.routes";
-import { router as authApi } from "./routes/auth.routes";
-import { createUser } from "./services/auth.service";
+import { router as authApi } from './routes/auth.routes';
 import { router as cartApi } from "./routes/cart.routes";
 
 export const app = express();

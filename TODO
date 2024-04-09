@@ -29,8 +29,8 @@
     ✔ permit to Admin to delete a product (delete) @started(24-04-08 16:38) @done(24-04-09 09:27) @lasted(16h49m18s)
     
 @high: api/cart routes to implement!
-    ☐ retrieve a user cart in the current situation (get) @started(24-04-09 08:43)
-    ☐ add a product to a user cart (post) @started(24-04-09 08:43)
+    ✔ retrieve a user cart in the current situation (get) @started(24-04-09 08:43) @done(24-04-09 15:43) @lasted(7h48s)
+    ☐ add a product to a user cart (post) using id product @started(24-04-09 08:43)
     ☐ remove a product from a cart (delete) @started(24-04-09 08:44)
     ☐ empty a user cart (delete) @started(24-04-09 08:44)
     

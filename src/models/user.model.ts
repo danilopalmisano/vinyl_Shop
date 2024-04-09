@@ -1,23 +1,7 @@
 import mongoose from 'mongoose';
 import { ILogin, IUser, roleEnum } from '../validation/user.validation';
 import { hashStuff } from '../utility/commonAuthFunction';
-
-const LoginSchema = new mongoose.Schema<ILogin>(
-	{
-		email: {
-			type: String,
-		},
-		password: {
-			type: String,
-		},
-		loggedIn: {
-			type: Boolean,
-		},
-	},
-	{ timestamps: true }
-);
-
-export const Login = mongoose.model('Login', LoginSchema);
+import { LoginSchema } from './login.model';
 
 const userSchema = new mongoose.Schema<IUser>({
 	username: {

@@ -1,4 +1,4 @@
-DELETE http://localhost:3000/api/cart/remove/:id HTTP/1.1
-# to add product id
+DELETE http://localhost:3000/api/cart/remove/661502b97fe20da8c4ff99a6 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MTU0NDU4MTdkNTljOGE1Mzg4OTUzNSIsImlhdCI6MTcxMjY4MzM5N30.--jGzIkhrovjBXVTyF240IcJqiNwCKRf0uP6cXzz3fo
 
 ###

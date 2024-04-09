@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { ILineItem } from "../validation/cart.validation";
 
-const lineItemSchema = new mongoose.Schema<ILineItem>(
+export const lineItemSchema = new mongoose.Schema<ILineItem>(
 	{
 		productId: {
 			type: String,

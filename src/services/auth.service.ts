@@ -7,7 +7,11 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 //* createUser
 
 export const createUser = async (user: IUser): Promise<IUser> => {
+<<<<<<< HEAD
 	return await User.create(user);
+=======
+	return await User.create(user); 
+>>>>>>> update-cart-to-let-it-works
 };
 //* findUserById
 export const findUserById = async (id: string): Promise<IUser | null> => {
