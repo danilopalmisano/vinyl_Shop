@@ -9,8 +9,6 @@ export const ZLoginSchema = z.object({
 	loggedIn: z.boolean().optional().default(false),
 });
 export const ZUserSchema = z.object({
-	name: z.string().min(1),
-	surname: z.string().min(1),
 	username: z.string().min(1),
 	login: ZLoginSchema.partial(),
 	wishlist: z.array(z.string()).optional(), // Array of product IDs
@@ -24,7 +22,7 @@ export const ZUserSchema = z.object({
 	// 	.optional(),
 	orders: z.array(z.string()).optional(),
 	guestId: z.string().optional(),
-	role: z.enum(roleEnum).default('user'),
+	role: z.enum(roleEnum).default("user"),
 });
 
 //Interface

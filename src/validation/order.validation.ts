@@ -11,8 +11,10 @@ export const statusEnum = [
 
 export const ZOrderSchema = z.object({
 	shippingAddress: z.object({
+		name: z.string().min(1),
+		surname: z.string().min(1),
 		addressLine1: z.string(),
-		addressLine2: z.string().optional(),
+		//addressLine2: z.string().optional(),
 		city: z.string(),
 		state: z.string(),
 		zipCode: z.string(),
