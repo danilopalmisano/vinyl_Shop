@@ -1,0 +1,4 @@
+GET http://localhost:3000/api/cart/:id HTTP/1.1
+# to add User id
+
+###

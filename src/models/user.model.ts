@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
-import { IUser, roleEnum } from "../validation/user.validation";
-import { hashStuff } from "../utility/commonAuthFunction";
+import mongoose from 'mongoose';
+import { IUser, roleEnum } from '../validation/user.validation';
+import { hashStuff } from '../utility/commonAuthFunction';
 
 const userSchema = new mongoose.Schema<IUser>({
 	username: {
@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema<IUser>({
 	},
 	login: {
 		type: mongoose.Schema.Types.ObjectId,
-		ref: "login",
+		ref: 'login',
 		required: true,
 	},
 
@@ -33,11 +33,11 @@ const userSchema = new mongoose.Schema<IUser>({
 	role: {
 		type: String,
 		enum: roleEnum,
-		default: "user",
+		default: 'user',
 	},
 });
 
-userSchema.pre("save", async function (next) {
+userSchema.pre('save', async function (next) {
 	const user = this; // Use 'this' to access the document being saved
 	try {
 		user.login.password = await hashStuff(user.login.password);
@@ -47,4 +47,4 @@ userSchema.pre("save", async function (next) {
 	}
 });
 
-export const User = mongoose.model("User", userSchema);
+export const User = mongoose.model('User', userSchema);
