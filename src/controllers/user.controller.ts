@@ -36,7 +36,7 @@ export const register = async (req: Request, res: Response) => {
 			return res.status(400).json({ message: "Email already exists!" });
 		}
 
-		const userCreated = await createUser(validationError.data);
+		const userCreated = await createUser(user);
 		res.status(200).json({
 			user: {
 				username: userCreated.username,
