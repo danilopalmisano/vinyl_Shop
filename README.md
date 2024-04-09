@@ -1,5 +1,4 @@
-#:vinyl_shop:
-###Installation:
+Installation:
 
 No dotenv Installation Required:
 
