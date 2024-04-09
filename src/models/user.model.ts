@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema<IUser>({
 	},
 	login: {
 		type: mongoose.Schema.Types.ObjectId,
-		ref: "login",
+		ref: 'login',
 		required: true,
 	},
 
@@ -17,11 +17,11 @@ const userSchema = new mongoose.Schema<IUser>({
 		type: String,
 		required: false,
 	},
-	cart: {
-		type: mongoose.Schema.Types.ObjectId,
-		ref: "cart",
-		required: true,
-	},
+	// cart: {
+	// 	type: mongoose.Schema.Types.ObjectId,
+	// 	ref: "cart",
+	// 	required: true,
+	// },
 	orders: {
 		type: String,
 		required: false,
@@ -32,8 +32,8 @@ const userSchema = new mongoose.Schema<IUser>({
 	},
 	role: {
 		type: String,
-		enum: ["user", "admin"],
-		default: "user",
+		enum: ['user', 'admin'],
+		default: 'user',
 	},
 });
 
