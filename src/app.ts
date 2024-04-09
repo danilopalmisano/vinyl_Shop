@@ -11,11 +11,7 @@ app.get("/", (req, res) => {
 	res.json({ message: "Server is online" });
 });
 
-createUser({
-	username: "Mimmo",
-	login: { email: "mimmomodem@example.com", password: "salvesalvino123" },
-	role: "user",
-});
+
 app.use("/api/auth", authApi);
 app.use("/api/products", productApi);
 app.use("/api/cart", cartApi);

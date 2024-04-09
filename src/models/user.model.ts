@@ -6,15 +6,12 @@ const LoginSchema = new mongoose.Schema<ILogin>(
 	{
 		email: {
 			type: String,
-			required: true,
 		},
 		password: {
 			type: String,
-			required: true,
 		},
 		loggedIn: {
 			type: Boolean,
-			required: true,
 		},
 	},
 	{ timestamps: true },
@@ -25,12 +22,10 @@ export const Login = mongoose.model("Login", LoginSchema);
 const userSchema = new mongoose.Schema<IUser>({
 	username: {
 		type: String,
-		required: true,
 	},
 	login: {
-		type: mongoose.Schema.Types.ObjectId,
-		ref: "Login",
-		required: true,
+		type: LoginSchema,
+		ref: "login",
 	},
 	/*cart: {
 		type: mongoose.Schema.Types.ObjectId,
@@ -39,11 +34,6 @@ const userSchema = new mongoose.Schema<IUser>({
 	},*/
 	orders: {
 		type: String,
-		required: false,
-	},
-	guestId: {
-		type: String,
-		required: false,
 	},
 	role: {
 		type: String,

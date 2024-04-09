@@ -37,7 +37,6 @@ export const register = async (req: Request, res: Response) => {
 		}
 
 		const userCreated = await createUser(validationError.data);
-		console.log("🤔 ~ userCreated:", userCreated);
 		res.status(200).json({
 			user: {
 				username: userCreated.username,
