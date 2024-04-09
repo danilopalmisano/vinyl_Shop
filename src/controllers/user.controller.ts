@@ -27,7 +27,7 @@ export const register = async (req: Request, res: Response) => {
 				.json(fromZodError(validationError.error).message);
 		}
 
-		const user: IUser = validationError.data;
+		const user = validationError.data;
 		const userByEmail = await findUserByEmail(
 			validationError.data.login.email,
 		);
@@ -35,7 +35,12 @@ export const register = async (req: Request, res: Response) => {
 		if (userByEmail) {
 			return res.status(400).json({ message: "Email already exists!" });
 		}
-
+		// will be implemented later fetching allowed email from DB
+		const adminValidName = ["admin@vinylshop.com"];
+		const newMail = user.login.email as string;
+		if (adminValidName.includes(newMail)) {
+			user.role = "admin";
+		}
 		const userCreated = await createUser(user);
 		res.status(200).json({
 			user: {
