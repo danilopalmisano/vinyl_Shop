@@ -17,11 +17,11 @@ const userSchema = new mongoose.Schema<IUser>({
 		type: String,
 		required: false,
 	},
-	cart: {
+	/*cart: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "cart",
 		required: true,
-	},
+	},*/
 	orders: {
 		type: String,
 		required: false,
@@ -32,7 +32,7 @@ const userSchema = new mongoose.Schema<IUser>({
 	},
 	role: {
 		type: String,
-		enum: ["user", "admin"],
+		enum: roleEnum,
 		default: "user",
 	},
 });

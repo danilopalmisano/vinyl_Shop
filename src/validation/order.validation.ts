@@ -2,7 +2,7 @@ import { z } from "zod";
 import { ZCartSchema } from "./cart.validation.js";
 import mongoose from "mongoose";
 
-const statusEnum = [
+export const statusEnum = [
 	"order created",
 	"shipped",
 	"delivered",
@@ -24,12 +24,9 @@ export const ZOrderSchema = z.object({
 	}),
 	cart: z.array(ZCartSchema),
 	status: z.enum(statusEnum).default("order created"),
-	createdAt: z.date().default(() => new Date()),
 });
 
 export const ZOptionalOrderSchema = ZOrderSchema.partial();
-
-
 
 //Interface
 export interface IOrder extends z.infer<typeof ZOrderSchema> {
