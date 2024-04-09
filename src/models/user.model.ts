@@ -1,6 +1,26 @@
 import mongoose from "mongoose";
-import { IUser, roleEnum } from "../validation/user.validation";
+import { ILogin, IUser, roleEnum } from "../validation/user.validation";
 import { hashStuff } from "../utility/commonAuthFunction";
+
+const LoginSchema = new mongoose.Schema<ILogin>(
+	{
+		email: {
+			type: String,
+			required: true,
+		},
+		password: {
+			type: String,
+			required: true,
+		},
+		loggedIn: {
+			type: Boolean,
+			required: true,
+		},
+	},
+	{ timestamps: true },
+);
+
+export const Login = mongoose.model("Login", LoginSchema);
 
 const userSchema = new mongoose.Schema<IUser>({
 	username: {
@@ -9,19 +29,14 @@ const userSchema = new mongoose.Schema<IUser>({
 	},
 	login: {
 		type: mongoose.Schema.Types.ObjectId,
-		ref: "login",
+		ref: "Login",
 		required: true,
 	},
-
-	wishlist: {
-		type: String,
-		required: false,
-	},
-	cart: {
+	/*cart: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "cart",
 		required: true,
-	},
+	},*/
 	orders: {
 		type: String,
 		required: false,
@@ -32,7 +47,7 @@ const userSchema = new mongoose.Schema<IUser>({
 	},
 	role: {
 		type: String,
-		enum: ["user", "admin"],
+		enum: roleEnum,
 		default: "user",
 	},
 });
