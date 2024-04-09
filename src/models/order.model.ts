@@ -4,6 +4,12 @@ import { IOrder, statusEnum } from '../validation/order.validation';
 const orderSchema = new mongoose.Schema<IOrder>(
 	{
 		shippingAddress: {
+			name: {
+				type: String,
+			},
+			surname: {
+				type: String,
+			},
 			adressLine1: {
 				type: String,
 			},
