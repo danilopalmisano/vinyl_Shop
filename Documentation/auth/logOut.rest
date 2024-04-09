@@ -1,3 +1,2 @@
 GET http://localhost:3000/api/auth/logout
-Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MTUyMGU3MDI2NDViZThjNzdmZjY0MCIsImlhdCI6MTcxMjY2MDgwM30.uNijOd4hlOL_B6atFzNJM1LWqT87RAuUTD4DIDROJV8
