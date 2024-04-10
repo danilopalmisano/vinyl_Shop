@@ -19,8 +19,7 @@ export const ZUserSchema = z.object({
 	// 		}),
 	// 	)
 	// 	.optional(),
-	orders: z.array(z.string()).optional(),
-	guestId: z.string().optional(),
+	// orders: z.array(z.string()).optional(),
 	role: z.enum(roleEnum).default("user"),
 });
 

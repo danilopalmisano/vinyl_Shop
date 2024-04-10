@@ -1,8 +1,12 @@
 import mongoose from "mongoose";
 import { IOrder, statusEnum } from "../validation/order.validation";
+import { cartSchema } from "./cart.model";
 
 const orderSchema = new mongoose.Schema<IOrder>(
 	{
+		userId: {
+			type: String,
+		},
 		shippingAddress: {
 			name: {
 				type: String,
@@ -10,7 +14,7 @@ const orderSchema = new mongoose.Schema<IOrder>(
 			surname: {
 				type: String,
 			},
-			adressLine1: {
+			addressLine1: {
 				type: String,
 			},
 			// addressLine2: {
@@ -37,18 +41,19 @@ const orderSchema = new mongoose.Schema<IOrder>(
 		// 		type: String,
 		// 	},
 		// },
-		cart: [
-			{
-				type: mongoose.Schema.Types.ObjectId,
-				ref: "cart",
-			},
-		],
+		cart: {
+			type: cartSchema,
+			ref: "cart",
+		},
 		status: {
 			type: String,
 			enum: statusEnum,
 			default: "order created",
 		},
+		totalPrice: {
+			type: Number,
+		},
 	},
-	{ timestamps: true }
+	{ timestamps: true },
 );
 export const Order = mongoose.model("Order", orderSchema);

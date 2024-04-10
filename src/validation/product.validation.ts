@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { z } from "zod";
 // import { ZCategorySchema } from "./category.validation";
 
-export const stockEnum = ["in stock", "out of stock", "discontinued"] as const;
+export const stockEnum = ["out of stock", "in stock", "discontinued"] as const;
 
 export const ZProductSchema = z.object({
 	name: z.string(),
