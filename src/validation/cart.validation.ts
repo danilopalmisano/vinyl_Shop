@@ -4,7 +4,7 @@ import { z } from "zod";
 
 export const ZLineItemSchema = z.object({
 	productId: z.string(),
-	quantity: z.number().positive().optional(),
+	quantity: z.number().positive(),
 	price: z.number().positive().optional(),
 	subtotal: z.number().positive().optional(),
 });

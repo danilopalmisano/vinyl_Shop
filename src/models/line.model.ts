@@ -20,4 +20,4 @@ export const lineItemSchema = new mongoose.Schema<ILineItem>(
 	{ timestamps: true },
 );
 
-export const LineItm = mongoose.model("Line", lineItemSchema);
+export const LineItem = mongoose.model('Line', lineItemSchema);

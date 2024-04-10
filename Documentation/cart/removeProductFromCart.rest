@@ -1,4 +1,4 @@
-DELETE http://localhost:3000/api/cart/remove/disco_di_saro 
+DELETE http://localhost:3000/api/cart/remove/661502b97fe20da8c4ff99a6 
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MTUyMGU3MDI2NDViZThjNzdmZjY0MCIsImlhdCI6MTcxMjY4ODc2OH0.LnMUEPp6wIRWokU71yzHnSMVHuujrkquibV823Q1eP0
 
 ###

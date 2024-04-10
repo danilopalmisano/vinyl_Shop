@@ -68,7 +68,7 @@ export const addProductToCart = async (req: ExtendedRequest, res: Response) => {
 				);
 
 				if (lineIndex !== -1) {
-					existingCart.lines[lineIndex].quantity! += 1; // to double check later
+					existingCart.lines[lineIndex].quantity += 1; // to double check later
 				} else {
 					existingCart.lines.push({ productId, quantity: 1 });
 				}
