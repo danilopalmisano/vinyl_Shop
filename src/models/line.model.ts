@@ -17,7 +17,7 @@ export const lineItemSchema = new mongoose.Schema<ILineItem>(
 			type: Number,
 		},
 	},
-	{ timestamps: true }
+	{ timestamps: true },
 );
 
 export const LineItm = mongoose.model("Line", lineItemSchema);

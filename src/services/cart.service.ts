@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { Cart } from '../models/cart.model';
-import { ICart } from '../validation/cart.validation';
+import { ICart, ILineItem } from "../validation/cart.validation";
+import { LineItm } from "../models/line.model";
 
 //get UserCart
 export const getUserCart = async (userId: string): Promise<ICart | null> => {
@@ -18,13 +19,23 @@ export const emptyUserCart = async (userId: string): Promise<ICart | null> => {
 };
 
 //remove a product from a User cart
-export const removeFromUserCart = async (
+export const removeItemFromUserCart = async (
 	userId: string,
-	productId: string
-): Promise<ICart | null> => {
-	return await Cart.findOneAndUpdate(
-		{ userId },
-		{ $pull: { lines: { productId } } },
-		{ new: true }
+	productId: string,
+): Promise<ILineItem | null> => {
+	const cart = await Cart.findOne({ userId });
+	if (!cart) {
+		throw new Error("Cart not found");
+	}
+	const deletedItem = cart.lines.find(
+		(lineItem) => lineItem.productId === productId,
 	);
+	if (!deletedItem) {
+		throw new Error("Item not found");
+	}
+	cart.lines = cart.lines.filter(
+		(lineItem) => lineItem.productId !== productId,
+	);
+	await cart.save();
+	return deletedItem;
 };
