@@ -24,3 +24,4 @@ export interface ILineItem extends z.infer<typeof ZLineItemSchema> {
 export interface ICart extends z.infer<typeof ZCartSchema> {
 	_id?: mongoose.Types.ObjectId;
 }
+

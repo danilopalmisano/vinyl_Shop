@@ -15,6 +15,7 @@ export const ZProductSchema = z.object({
 });
 
 export const ZOptionalProductSchema = ZProductSchema.partial();
+export type IOptionalProduct = z.infer<typeof ZOptionalProductSchema>;
 
 //Interface
 export interface IProduct extends z.infer<typeof ZProductSchema> {

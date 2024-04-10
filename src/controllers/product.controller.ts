@@ -6,6 +6,12 @@ import {
 	getProducts,
 	upProduct,
 } from "../services/product.service";
+import {
+	ZOptionalProductSchema,
+	ZProductSchema,
+} from '../validation/product.validation';
+import { fromZodError } from 'zod-validation-error';
+import { Product } from '../models/product.model';
 
 //retrieve all products
 export const showProducts = async (req: Request, res: Response) => {
@@ -13,7 +19,7 @@ export const showProducts = async (req: Request, res: Response) => {
 		const products = await getProducts();
 		res.status(200).json(products);
 	} catch (error) {
-		res.status(404).json({ message: "no product yet" });
+		res.status(404).json({ message: 'no product yet' });
 	}
 };
 
@@ -22,44 +28,71 @@ export const showSpecificProduct = async (req: Request, res: Response) => {
 	try {
 		const productId = req.params.id;
 		if (!productId) {
-			res.status(400).json({ message: "missing product id" });
+			res.status(400).json({ message: 'missing product id' });
 		}
 		const product = await findProductById(productId);
 		if (product) {
 			res.status(200).json(product);
 		} else {
-			throw new Error("product not found");
+			throw new Error('product not found');
 		}
 	} catch (error) {
-		return res.status(404).json({ message: "product not found" });
+		return res.status(404).json({ message: 'product not found' });
 	}
 };
 
-//permit to Admin to add a new product
+//allow Admin to add a new product
 export const addProduct = async (req: Request, res: Response) => {
 	try {
-		const product = await createProduct(req.body);
+		const body = req.body;
+		const validationError = ZProductSchema.safeParse(body);
+		if (!validationError.success) {
+			return res
+				.status(400)
+				.json(fromZodError(validationError.error).message);
+		}
+		//check if product already exists by name
+		const existingProduct = await Product.findOne({
+			name: validationError.data.name,
+		});
+		if (existingProduct) {
+			return res.status(400).json({
+				message: `Product with name '${validationError.data.name}' already exists.`,
+			});
+		}
+		const product = await createProduct(validationError.data);
 		res.status(201).json(product);
 	} catch (error) {
-		return res.status(400).json({ message: "bad request" });
+		return res.status(500).json({ message: 'internal server error' });
 	}
 };
 
-//permit to Admin to update an existing product
+//allow Admin to update an existing product
 export const updateProduct = async (req: Request, res: Response) => {
 	try {
 		const _id = req.params.id;
-		const product = await upProduct(_id, req.body);
+
+		const body = req.body;
+		const validationError = ZOptionalProductSchema.safeParse(body);
+		if (!validationError.success) {
+			return res
+				.status(400)
+				.json(fromZodError(validationError.error).message);
+		}
+		const product = await upProduct(_id, validationError.data);
+		if (!product) {
+			return res.status(404).json({ message: 'product not found' });
+		}
 		res.status(200).json({
-			message: "product updated successfully",
+			message: 'product updated successfully',
 			product,
 		});
 	} catch (error) {
-		return res.status(404).json({ message: "product not found" });
+		return res.status(500).json({ message: 'internal server error' });
 	}
 };
 
-//permit to Admin to delete a product
+//allow Admin to delete a product
 export const deleteProduct = async (req: Request, res: Response) => {
 	try {
 		const product = await delProduct(req.params.id);

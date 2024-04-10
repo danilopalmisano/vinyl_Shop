@@ -1,8 +1,11 @@
 PUT http://localhost:3000/api/products/661502b97fe20da8c4ff99a6
 Content-Type: application/json
 
-{
+{   
+    "price": 25.98,
     "stockQuantity": 13,
     "stockStatus": "in stock",
     "category": ["funk","liscio"]
 }
+
+###

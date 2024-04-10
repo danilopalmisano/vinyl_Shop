@@ -2,10 +2,10 @@ POST http://localhost:3000/api/products
 Content-Type: application/json
 
 {
-    "name": "lptitle",
-    "description": "description",
-    "price": 100,
-    "stockQuantity": 10,
+    "name": "lptitle4",
+    "description": "description4",
+    "price": 201.56,
+    "stockQuantity": 2,
     "stockStatus": "in stock",
-    "category": ["funk","liscio"]
+    "category": ["hip-hop","techno"]
 }
