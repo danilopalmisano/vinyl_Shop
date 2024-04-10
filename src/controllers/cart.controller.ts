@@ -1,12 +1,39 @@
-import { Request, Response } from "express";
+import { Response } from 'express';
 import {
-	addToUserCart,
-	emptyUserCart,
 	getUserCart,
+	addToUserCart,
+	updateCart,
 	removeItemFromUserCart,
-} from "../services/cart.service";
-import { ExtendedRequest } from "../middleware/authMiddleware";
-import { ICart } from "../validation/cart.validation";
+	emptyUserCart,
+} from '../services/cart.service';
+import { ExtendedRequest } from '../middleware/authMiddleware';
+import { ICart, ILineItem } from '../validation/cart.validation';
+
+//round cart values
+const roundCartValues = async (userId: string) => {
+	const cart = await getUserCart(userId);
+	if (cart) {
+		cart.totalPrice = parseFloat(cart.totalPrice!.toFixed(2)); // Round to 2 decimal places
+		cart.lines.forEach((line: any) => {
+			line.subtotal = parseFloat(line.subtotal.toFixed(2)); // Round to 2 decimal places
+		});
+		return await updateCart(cart);
+	}
+	throw new Error('Cart not found');
+};
+
+//generate total price
+const generateTotalPrice = async (userId: string) => {
+	const cart = await getUserCart(userId);
+	if (cart) {
+		cart.totalPrice = cart.lines.reduce(
+			(total, lineItem) => total + (lineItem.subtotal as number),
+			0
+		);
+		return await updateCart(cart);
+	}
+	throw new Error('Cart not found');
+};
 
 //show User cart
 export const getCart = async (req: ExtendedRequest, res: Response) => {
@@ -19,11 +46,11 @@ export const getCart = async (req: ExtendedRequest, res: Response) => {
 			res.status(200).json(userCart);
 		} else {
 			res.status(404).json({
-				message: "you need to be logged in to view your cart",
+				message: 'you need to be logged in to view your cart',
 			});
 		}
 	} catch (error) {
-		res.status(500).json({ message: "Internal server error" });
+		res.status(500).json({ message: 'Internal server error' });
 	}
 };
 
@@ -31,43 +58,68 @@ export const getCart = async (req: ExtendedRequest, res: Response) => {
 export const addProductToCart = async (req: ExtendedRequest, res: Response) => {
 	try {
 		const userId = req.user?._id as string;
-
 		const productId = req.params.id;
 		if (userId) {
-			// Create a new cart with the provided items
-			const newCart: ICart = {
-				userId,
-				lines: [{ productId: productId, quantity: 1 }],
-			};
+			// Check for existing cart with the same user ID
+			const existingCart = await getUserCart(userId);
+			if (existingCart) {
+				const lineIndex = existingCart.lines.findIndex(
+					(line: ILineItem) => line.productId === productId
+				);
 
-			const createCart = await addToUserCart(newCart);
-			if (!createCart) {
-				return res.status(500).json({
-					message: "Error adding items to cart",
+				if (lineIndex !== -1) {
+					existingCart.lines[lineIndex].quantity! += 1; // to double check later
+				} else {
+					existingCart.lines.push({ productId, quantity: 1 });
+				}
+
+				const updatedCart = await updateCart(existingCart);
+				if (!updatedCart) {
+					return res.status(500).json({
+						message: 'Error updating cart',
+					});
+				}
+
+				res.status(200).json({
+					message: 'Product quantity updated in cart',
+					cart: await getUserCart(userId),
+				});
+			} else {
+				const newCart: ICart = {
+					userId,
+					lines: [{ productId, quantity: 1 }],
+				};
+
+				const createdCart = await addToUserCart(newCart);
+				if (!createdCart) {
+					return res.status(500).json({
+						message: 'Error creating cart',
+					});
+				}
+
+				res.status(200).json({
+					message: 'Product added to cart',
+					cart: await getUserCart(userId),
 				});
 			}
-			res.status(200).json({
-				message: "Items added to cart",
-				cart: await getUserCart(userId),
-			});
 		}
 	} catch (error) {
-		res.status(404).json({ message: "cart not found" });
+		res.status(500).json({ message: 'Internal server error' });
 	}
 };
 
 //remove product from a User cart
 export const removeProductFromCart = async (
 	req: ExtendedRequest,
-	res: Response,
+	res: Response
 ) => {
 	const productId = req.params.id;
 	const userId = req.user?._id as string;
 	try {
 		const deletedItem = await removeItemFromUserCart(userId, productId);
 		res.status(200).json({
-			message: "Item deleted",
-			"deleted item": {
+			message: 'Item deleted',
+			'deleted item': {
 				productId: deletedItem?.productId,
 				quantity: deletedItem?.quantity,
 			},

@@ -1,4 +1,4 @@
-POST http://localhost:3000/api/cart/add/disco_di_saro HTTP/1.1
+POST http://localhost:3000/api/cart/add/661502b97fe20da8c4ff99a6 HTTP/1.1
 # add product id to the url
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MTUyMGU3MDI2NDViZThjNzdmZjY0MCIsImlhdCI6MTcxMjY4ODc2OH0.LnMUEPp6wIRWokU71yzHnSMVHuujrkquibV823Q1eP0
