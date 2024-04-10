@@ -9,58 +9,56 @@
     ✔ create an env.ts file in src, that contains the sensible variables useful to developers @done(24-04-08 12:13)
 
     
-@high: use Zod?
+@high: setting-up
     ✔ create different branches regarding to every task; @done(24-04-08 14:23)
     ✔ create entities validations; @started(24-04-08 16:38) @done(24-04-08 17:06) @lasted(28m50s)
     ✔ create interfaces from validations; @started(24-04-08 16:38) @done(24-04-09 09:59) @lasted(17h21m44s)
     ✔ create models from interfaces; @started(24-04-08 16:38) @done(24-04-09 10:00) @lasted(17h22m1s)
-    ☐ create routes; @started(24-04-08 16:38)
+    ✔ create routes; @started(24-04-08 16:38) @done(24-04-10 18:08) @lasted(2d1h30m47s)
     ☐ create services; @started(24-04-08 16:38)
     ☐ create controllers; @started(24-04-08 16:38)
-    
-@high: product
-    ✔ create product logic @started(24-04-08 15:28) @done(24-04-09 09:59) @lasted(18h31m38s)
-    
-@high: api/product routes
-    ✔ retrieve all products (get) @started(24-04-08 16:38) @done(24-04-08 17:05) @lasted(27m53s)
-    ✔ retrieve product by id (get) @started(24-04-08 16:38) @done(24-04-08 17:05) @lasted(27m56s)
-    ✔ permit to Admin to add a new product (post) @started(24-04-08 16:38) @done(24-04-09 09:27) @lasted(16h49m13s)
-    ✔ permit to Admin to update an existing product info (put) @started(24-04-08 16:38) @done(24-04-09 09:27) @lasted(16h49m16s)
-    ✔ permit to Admin to delete a product (delete) @started(24-04-08 16:38) @done(24-04-09 09:27) @lasted(16h49m18s)
-    
-    @high: api/cart routes to implement!
-    ✔ retrieve a user cart in the current situation (get) @started(24-04-09 08:43) @done(24-04-09 15:43) @lasted(7h48s)
-    ✔ add a product to a user cart (post) using id product @started(24-04-09 08:43) @done(24-04-10 11:06) @lasted(1d2h23m28s)
-    ☐ check if a User has already a cart with a specific product, and in that case needs to add to same it; in case of same id, sum to product; @started(24-04-10 10:46)
-    ☐ calculate the subtotal of a line (quantity * price) @started(24-04-10 10:47)
-    ☐ calculate total, accumulate all subtotal (reduce) @started(24-04-10 10:48)
-    ☐ if a product doesn't exist on database you can't add it to cart @started(24-04-10 10:47)
-    ☐ round up subtotal and total final price
-    ✔ remove a product from a cart (delete) @started(24-04-09 08:44) @done(24-04-10 10:49) @lasted(1d2h5m21s)
-    ✔ empty a user cart (delete) @started(24-04-09 08:44) @done(24-04-10 10:49) @lasted(1d2h5m8s)
-    
-    ☐ add updateCart in cart.service @started(24-04-10 11:02)
+    ☐ create middlewares;
 
-@high: api/order routes
-    ☐ retrieve User order list (get); optional: layout
-    ☐ permit to User to create a new order from his cart
-    ☐ retrieve a single order by id (get)
-    ☐ permit to Admin to update the order status (put)
-    ☐ permit to Admin to delete  the order (delete)
-    
-@high: user
-        ☐ create user logic (interface, model, service, controller)
-    
-@high: api/auth routes
-        ✔ register User (post) @started(24-04-08 14:38) @done(24-04-10 10:37) @lasted(1d19h59m24s)
-        ✔ register Admin (post) @started(24-04-10 10:38) @done(24-04-10 10:39) @lasted(1m38s)
-        ✔ User/ Admin login (post) @started(24-04-08 15:00) @done(24-04-10 10:37) @lasted(1d19h37m38s)
-        ✔ User/ Admin logout (get) @started(24-04-08 15:01) @done(24-04-10 10:37) @lasted(1d19h36m40s)
-        ✔ User/ Admin auth info (get) @started(24-04-08 15:01) @done(24-04-10 10:37) @lasted(1d19h36m42s)
-        ☐ add whitelist/ blacklist logic to registe a specifi Admin
-        ☐ add middleware to check the roles, and test it
-    
-@high: auth services
-    ✔ find user by email: use the user email to do some check stuff @done(24-04-10 10:40)
-    ✔ update status: update the status of the logged user @done(24-04-10 10:40)
-    
+@high: project tasks requested
+    ✔ API di autenticazione: @done(24-04-10 19:17)
+        ✔ POST /api/auth/register: Permette agli utenti generici di registrarsi fornendo le informazioni necessarie come nome, email e password. @done(24-04-10 19:16)
+        ✔ POST /api/auth/admin/register: Permette agli utenti admin di registrarsi fornendo le informazioni necessarie come nome, email e password. Implementare un controllo dell’email a fronte di una whitelist di indirizzi mail abilitabili all’accesso come Admin. @done(24-04-10 19:17)
+        ✔ POST /api/auth/login: Consente agli utenti di effettuare l'accesso utilizzando le proprie credenziali. @done(24-04-10 19:17)
+        ✔ GET /api/auth/logout: Permette agli utenti di disconnettersi. @done(24-04-10 19:17)
+        ✔ GET /api/auth/user: Restituisce le informazioni dell'utente attualmente autenticato (generico o Admin). @done(24-04-10 19:17)
+
+    ☐ API per la gestione dei prodotti:
+        ✔ GET /api/products: Restituisce l'elenco completo dei prodotti disponibili del catalogo. @done(24-04-10 19:19)
+        ☐ Opzionale: implementare un sistema di paginazione per migliorare e performance dell’API
+        ✔ GET /api/products/:id: Restituisce i dettagli di un singolo prodotto (identificato dal suo ID). @done(24-04-10 19:21)
+        ☐ POST /api/products: Permette agli utenti Admin di aggiungere un nuovo prodotto al catalogo. *
+        ☐ PUT /api/products/:id: Consente agli utenti Admin di modificare le informazioni di un prodotto esistente. *
+        ☐ DELETE /api/products/:id: Permette agli utenti Admin di eliminare un prodotto dal catalogo. *
+
+    ☐ API per la gestione del carrello:
+        ☐ GET /api/cart: Restituisce il contenuto attuale del carrello dell'utente. *
+        ☐ POST /api/cart/add/:id: Aggiunge un prodotto al carrello dell'utente. *
+        ☐ DELETE /api/cart/remove/:id: Rimuove un prodotto dal carrello dell'utente. *
+        ☐ DELETE /api/cart/clear: Svuota il carrello dell'utente. *
+
+    ☐ API degli Ordini:
+        ☐ GET /api/orders: Restituisce lo storico degli ordini dell'utente.
+        ☐ Opzionale: implementare un sistema di paginazione per migliorare le performance dell’API
+        ☐ POST /api/orders: Permette agli utenti di creare un nuovo ordine a partire dai prodotti presenti attualmente nel carrello, con l’aggiunta dei dati di spedizione necessari:
+            {
+                Nome,
+                Cognome,
+                Indirizzo,
+                Cap,
+                Città,
+                Regione,
+                Stato
+            }
+        ☐ GET /api/orders/:id: Restituisce i dettagli di un singolo ordine identificato dal suo ID.
+        ☐ PUT /api/orders/:id: Consente agli amministratori di aggiornare lo stato di un ordine esistente.
+        ☐ DELETE /api/orders/:id: Permette agli amministratori di cancellare un ordine. Suggerimento: modificare lo stato dell’ordine
+
+@high: remaining stuff to do
+    ☐ checkrole middleware *
+    ☐ product pagination
+    ☐ jwt refreshToken/set a timer to existing one
