@@ -1,11 +1,15 @@
 import { Request, Response } from "express";
 import { getUserCart } from "../services/cart.service";
 import {
+	createOrderHandler,
 	findOrder,
 	getOrders,
 	orderStatusHandler,
 } from "../services/order.service";
-import { ExtendedRequest } from '../middleware/authMiddleware';
+import { ExtendedRequest } from "../middleware/authMiddleware";
+import { IOrder, ZOrderSchema } from "../validation/order.validation";
+import { fromZodError } from "zod-validation-error";
+import { ICart } from "../validation/cart.validation";
 
 //show all orders
 export const showOrders = async (req: Request, res: Response) => {
@@ -20,7 +24,7 @@ export const showOrders = async (req: Request, res: Response) => {
 //show order by id
 export const getOrderById = async (req: Request, res: Response) => {
 	try {
-		const orderId = req.body?.orderId;
+		const orderId = req.params.id;
 		if (!orderId) {
 			return res.status(400).json({ message: "Missing order ID" });
 		}
@@ -38,18 +42,32 @@ export const getOrderById = async (req: Request, res: Response) => {
 //create new order
 export const createOrder = async (req: ExtendedRequest, res: Response) => {
 	try {
-		if (req.user?._id) {
-			const cartFromUserId = await getUserCart(req.user?._id.toString());
-			const orderData = {
-				...req.body,
+		const userId = req.user?._id as string;
+		const body = req.body;
+		if (userId && body) {
+			const cartFromUserId = (await getUserCart(userId)) as ICart;
+			if (!cartFromUserId) {
+				return res.status(400).json({ message: "Cart not found" });
+			}
+			const validationError = ZOrderSchema.safeParse(body);
+			if (!validationError.success) {
+				return res
+					.status(400)
+					.json(fromZodError(validationError.error).message);
+			}
+			const validateBody = validationError.data.shippingAddress;
+			const realPrice = 0; //function to calcultate real price from real price fetched from database
+			const orderData: IOrder = {
+				userId: userId,
 				cart: cartFromUserId,
+				shippingAddress: validateBody,
+				totalPrice: realPrice,
 			};
-			res.status(200).json(orderData);
+			const newOrder = await createOrderHandler(orderData);
+			res.status(200).json(newOrder);
 		}
-		//to implement if the cart is empty
-		//to implement if the cart is existent
 	} catch (error) {
-		res.status(400).json(error);
+		res.status(500).json(error);
 	}
 };
 

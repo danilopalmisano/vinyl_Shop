@@ -9,6 +9,11 @@ export const findOrder = async (id: string): Promise<IOrder | null> => {
 	return await Order.findById(id);
 };
 
+// Creates a new order in the database
+export const createOrderHandler = async (data: IOrder): Promise<IOrder> => {
+	return await Order.create(data);
+};
+
 export const orderStatusHandler = async (
 	orderId: string,
 	status: string

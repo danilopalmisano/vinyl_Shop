@@ -1,83 +1,80 @@
-  
 # Vinyl Shop
-🛒 A simple RESTful API for Purchases and Products 🛒 
+
+🛒 A simple RESTful API for Purchases and Products 🛒
 
 ## <b> **Table of Contents** </b>
-- [Vinyl Shop](#vinyl-shop)
-	- [ **Table of Contents** ](#-table-of-contents-)
-		- [Installation:](#installation)
-		- [No dotenv Installation Required:](#no-dotenv-installation-required)
-		- [Setting up .env file](#setting-up-env-file)
-		- [Generating Random Keys](#generating-random-keys)
-		- [Initial Setup:](#initial-setup)
-		- [Transpilation (Run it the first time only):](#transpilation-run-it-the-first-time-only)
-		- [Running the Server:](#running-the-server)
-- [Features](#features)
-	- [ **Authentication API** ](#-authentication-api-)
-	- [ **Products API** ](#-products-api-)
-	- [ **Cart API** ](#-cart-api-)
-	- [ **Order API** ](#-order-api-)
-- [Interfaces](#interfaces)
-	- [ User Interface ](#-user-interface-)
-		- [Login Interface](#login-interface)
-		- [Role Enum](#role-enum)
-	- [ Product Interface ](#-product-interface-)
-		- [StockStatus Enum](#stockstatus-enum)
-	- [ Cart Interface ](#-cart-interface-)
-	- [ LineItem Interface ](#-lineitem-interface-)
-	- [ Order Interface ](#-order-interface-)
-		- [Status Enum](#status-enum)
-	- [ Decode Token Interface ](#-decode-token-interface-)
-- [Project Tree](#project-tree)
-- [Credits](#credits)
+
+-   [Vinyl Shop](#vinyl-shop)
+    -   [ **Table of Contents** ](#-table-of-contents-)
+        -   [Installation:](#installation)
+        -   [No dotenv Installation Required:](#no-dotenv-installation-required)
+        -   [Setting up .env file](#setting-up-env-file)
+        -   [Generating Random Keys](#generating-random-keys)
+        -   [Initial Setup:](#initial-setup)
+        -   [Transpilation (Run it the first time only):](#transpilation-run-it-the-first-time-only)
+        -   [Running the Server:](#running-the-server)
+-   [Features](#features)
+    -   [ **Authentication API** ](#-authentication-api-)
+    -   [ **Products API** ](#-products-api-)
+    -   [ **Cart API** ](#-cart-api-)
+    -   [ **Order API** ](#-order-api-)
+-   [Interfaces](#interfaces)
+    -   [ User Interface ](#-user-interface-)
+        -   [Login Interface](#login-interface)
+        -   [Role Enum](#role-enum)
+    -   [ Product Interface ](#-product-interface-)
+        -   [StockStatus Enum](#stockstatus-enum)
+    -   [ Cart Interface ](#-cart-interface-)
+    -   [ LineItem Interface ](#-lineitem-interface-)
+    -   [ Order Interface ](#-order-interface-)
+        -   [Status Enum](#status-enum)
+    -   [ Decode Token Interface ](#-decode-token-interface-)
+-   [Project Tree](#project-tree)
+-   [Credits](#credits)
 
 ### Installation:
 
 ### No dotenv Installation Required:
 
 As long as you have a .env file placed in the root directory of your project,
-environment variables will be loaded automatically when you execute a script defined in your package.json file. 
-This eliminates the need for manual installation of the dotenv package.     
+environment variables will be loaded automatically when you execute a script defined in your package.json file.
+This eliminates the need for manual installation of the dotenv package.  
 **If you want to add any other key to the .env file, make sure you do the same in the env.ts you'll find in the utility folder.**
 
 You can access them in any file of your code importing:
-	
- 	import { env } from "./utility/env";
+import { env } from "./utility/env";
 
-	
 ### Setting up .env file
-  
+
 Create a file named .env in the root directory of your project (usually where your package.json file is).
 Add key-value pairs: Each line represents a variable. The format is KEY=VALUE.  
 **If you want to add any other key to the .env file, make sure you do the same in the env.ts you'll find in the utility folder.**
 
 how your .env file should look like:
 
- 	MONGODB_URI=mongodb://localhost:"Your port number ex.= 27017, use no quotation mark"/ 
+MONGODB_URI=mongodb://localhost:"Your port number ex.= 27017, use no quotation mark"/
 
-	ACCESS_SECRET_TOKEN= Random Key no quotation mark
-	REFRESH_SECRET_TOKEN= Random Key no quotation mark
+    ACCESS_SECRET_TOKEN= Random Key no quotation mark
+    REFRESH_SECRET_TOKEN= Random Key no quotation mark
 
-	LOCAL_DBNAME= VinylShop_db_local
-	DEV_DBNAME= VinylShop_db_dev
-	PROD_DBNAME= VinylShop_db_prod
+    LOCAL_DBNAME= VinylShop_db_local
+    DEV_DBNAME= VinylShop_db_dev
+    PROD_DBNAME= VinylShop_db_prod
 
-	LOCAL_PORT= "NUMBER for ex.= 3***, use no quotation mark"
-	DEV_PORT= "NUMBER for ex.= 808*, use no quotation mark"
-	PROD_PORT= "NUMBER for ex.= 808*, use no quotation mark"
+    LOCAL_PORT= "NUMBER for ex.= 3***, use no quotation mark"
+    DEV_PORT= "NUMBER for ex.= 808*, use no quotation mark"
+    PROD_PORT= "NUMBER for ex.= 808*, use no quotation mark"
 
- 
- 
 ### Generating Random Keys
- To generate random keys to use as ACCESS/REFRESH TOKEN copy this in your the terminal:
- 	
-  	node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
- 
+
+To generate random keys to use as ACCESS/REFRESH TOKEN copy this in your the terminal:
+node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
+
 ### Initial Setup:
 
-Open a terminal in your project directory and run: 
+Open a terminal in your project directory and run:
 
-	npm install
+    npm install
 
 This command will download and install all the necessary dependencies listed in the package.json file.
 
@@ -85,23 +82,23 @@ This command will download and install all the necessary dependencies listed in 
 
 Transpilation (First Time Only): After the initial installation, run:
 
- 	npm run tsc 
- 
- only once to transpile your TypeScript code into JavaScript. This step is only required the first time you set up the project.
+npm run tsc
+
+only once to transpile your TypeScript code into JavaScript. This step is only required the first time you set up the project.
 
 ### Running the Server:
 
 From then on, you can use the single command:
 
-	npm run server
+    npm run server
 
-to both transpile your code and start the server using Nodemon. 
+to both transpile your code and start the server using Nodemon.
 Nodemon will automatically watch for changes in your TypeScript files and restart the server whenever you make modifications, streamlining your development workflow.
-
 
 # Features
 
 ## <b> **Authentication API** </b>
+
 | Feature            | Endpoint                      |  Coded?  | PrivateRoutes |
 | ------------------ | :---------------------------- | :------: | :-----------: |
 | **Register User**  | POST /api/auth/register       | &#10004; |    PUBLIC     |
@@ -121,6 +118,7 @@ Nodemon will automatically watch for changes in your TypeScript files and restar
 | **Delete a Product**         | DELETE /api/products/:id | &#10004; |     ADMIN     |
 
 ## <b> **Cart API** </b>
+
 | Feature                       | Endpoint                    |  Coded?  | PrivateRoutes |
 | ----------------------------- | :-------------------------- | :------: | :-----------: |
 | **Show Current User Cart**    | GET /api/cart               | &#10004; |     USER      |
@@ -129,25 +127,28 @@ Nodemon will automatically watch for changes in your TypeScript files and restar
 | **Remove Cart**               | DELETE /api/cart/clear      | &#10004; |     USER      |
 
 ## <b> **Order API** </b>
-| Feature                      | Endpoint              |  Coded?  | PrivateRoutes |
-| ---------------------------- | :-------------------- | :------: | :-----------: |
-| **Show Current User Orders** | GET /api/order        | &#10006; |  USER/ADMIN   |
-| **Show a specific Order**    | GET /api/order/:id    | &#10006; |  USER/ADMIN   |
-| **Add an Order**             | POST /api/order       | &#10006; |     USER      |
-| **Edit an Order**            | PUT /api/order/:id    | &#10006; |     ADMIN     |
+
+| Feature                      |       Endpoint        |  Coded?  | PrivateRoutes |
+| ---------------------------- | :-------------------: | :------: | :-----------: |
+| **Show Current User Orders** |    GET /api/order     | &#10006; |  USER/ADMIN   |
+| **Show a specific Order**    |  GET /api/order/:id   | &#10006; |  USER/ADMIN   |
+| **Add an Order**             |    POST /api/order    | &#10006; |     USER      |
+| **Edit an Order**            |  PUT /api/order/:id   | &#10006; |     ADMIN     |
 | **Delete an Order**          | DELETE /api/order/:id | &#10006; |     ADMIN     |
 
 # Interfaces
 
 ## <b> User Interface </b>
+
 | Key      | Type            |
 | -------- | --------------- |
-| _id      | ObjectId        |
+| \_id     | ObjectId        |
 | username | String          |
 | login    | Login Interface |
 | role     | Enum            |
 
-### Login Interface 
+### Login Interface
+
 | Key      | Type    |
 | -------- | ------- |
 | email    | String  |
@@ -155,6 +156,7 @@ Nodemon will automatically watch for changes in your TypeScript files and restar
 | loggedIn | Boolean |
 
 ### Role Enum
+
 | Value | Description |
 | ----- | ----------- |
 | 0     | User        |
@@ -173,6 +175,7 @@ Nodemon will automatically watch for changes in your TypeScript files and restar
 | category      | String   |
 
 ### StockStatus Enum
+
 | Value | Description  |
 | ----- | ------------ |
 | 0     | Out of Stock |
@@ -180,6 +183,7 @@ Nodemon will automatically watch for changes in your TypeScript files and restar
 | 2     | Discontinued |
 
 ## <b> Cart Interface </b>
+
 | Key        | Type       |
 | ---------- | ---------- |
 | userId     | ObjectId   |
@@ -187,6 +191,7 @@ Nodemon will automatically watch for changes in your TypeScript files and restar
 | totalPrice | Number     |
 
 ## <b> LineItem Interface </b>
+
 | Key       | Type     |
 | --------- | -------- |
 | productId | ObjectId |
@@ -196,21 +201,23 @@ Nodemon will automatically watch for changes in your TypeScript files and restar
 
 ## <b> Order Interface </b>
 
-| Key                          | Type     |
-| ---------------------------- | -------- |
-| userId                       | ObjectId |
-| cart                         | Cart     |
-| totalPrice                   | Number   |
-| status                       | Enum     |
-| shippingAddress              | Object   |
-| shippingAddress.name         | String   |
-| shippingAddress.surname      | String   |
-| shippingAddress.addressLine1 | String   |
-| shippingAddress.zipCode      | String   |
-| shippingAddress.city         | String   |
-| shippingAddress.country      | String   |
+| Key                         | Type     |
+| --------------------------- | -------- |
+| userId                      | ObjectId |
+| cart                        | Cart     |
+| totalPrice                  | Number   |
+| status                      | Enum     |
+| shippingAddress             | Object   |
+| shippingAddress.name        | String   |
+| shippingAddress.surname     | String   |
+| shippingAddress.addressLine | String   |
+| shippingAddress.zipCode     | String   |
+| shippingAddress.city        | String   |
+| shippingAddress.country     | String   |
+| shippingAddress.state       | String   |
 
 ### Status Enum
+
 | Value | Description   |
 | ----- | ------------- |
 | 0     | Order Created |
@@ -221,10 +228,10 @@ Nodemon will automatically watch for changes in your TypeScript files and restar
 | 5     | Canceled      |
 
 ## <b> Decode Token Interface </b>
+
 | Key | Type   |
 | --- | ------ |
 | id  | String |
-
 
 # Credits
 
