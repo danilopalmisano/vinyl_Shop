@@ -49,7 +49,7 @@ export const addProductStockQuantityHandler = async (
 	return await Product.findByIdAndUpdate(
 		productId,
 		{ $inc: { stockQuantity: delta } },
-		{ new: true },
+		{ new: true }
 	);
 };
 

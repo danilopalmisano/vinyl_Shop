@@ -23,3 +23,10 @@ export interface IUser extends z.infer<typeof ZUserSchema> {
 
 //Interface
 export type ILogin = z.infer<typeof ZLoginSchema>;
+
+export interface IFormattedUser {
+	username: String;
+	email: String;
+	role: String;
+	loggedIn: Boolean;
+}

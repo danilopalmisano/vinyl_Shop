@@ -1,4 +1,3 @@
-DELETE http://localhost:3000/api/cart/remove/661502b97fe20da8c4ff99a6 
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MTUyMGU3MDI2NDViZThjNzdmZjY0MCIsImlhdCI6MTcxMjY4ODc2OH0.LnMUEPp6wIRWokU71yzHnSMVHuujrkquibV823Q1eP0
-
+DELETE http://localhost:3000/api/cart/remove/6617ef8d088228361aa1fa06 
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MTdlYmNkMDg4MjI4MzYxYWExZjlmMCIsImlhdCI6MTcxMjg0MzkxOX0.OsuMAnTZLg7GPNbO_JHMSQzJUGeYf7G-t6VHybI0ZYw
 ###

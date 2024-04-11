@@ -7,7 +7,11 @@ import {
 	emptyUserCart,
 } from '../services/cart.service';
 import { ExtendedRequest } from '../middleware/authMiddleware';
-import { ICart, ILineItem } from '../validation/cart.validation';
+import {
+	ICart,
+	IFormattedCart,
+	ILineItem,
+} from '../validation/cart.validation';
 import { findProductById } from '../services/product.service';
 
 //round cart values -->  function that round to 2 decimal places
@@ -57,7 +61,18 @@ export const getCart = async (req: ExtendedRequest, res: Response) => {
 		if (userCart === null) {
 			return res.status(404).json({ message: 'Cart not found' });
 		}
-		res.status(200).json(userCart);
+		const showCart: IFormattedCart = {
+			_id: userCart._id,
+			userId: userCart.userId,
+			totalPrice: userCart.totalPrice,
+			lines: userCart.lines.map((line) => ({
+				productId: line.productId,
+				quantity: line.quantity,
+				price: line.price,
+				subtotal: line.subtotal,
+			})),
+		};
+		res.status(200).json(showCart);
 	} catch (error) {
 		res.status(500).json({ message: 'Internal server error' });
 	}
@@ -66,21 +81,15 @@ export const getCart = async (req: ExtendedRequest, res: Response) => {
 //add product to a User cart
 export const addProductToCart = async (req: ExtendedRequest, res: Response) => {
 	try {
-		console.log('🚀 addProductToCart controller triggered');
 		const userId = req.user?._id as string;
 		const productId = req.params.id;
 
-		console.log('userId:', userId);
-		console.log('productId:', productId);
-
 		// Check if product exists
 		const existingProduct = await findProductById(productId);
-		console.log('existingProduct:', existingProduct);
 		// destructure dbProduct for price
 		const dbProductPrice = existingProduct?.price as number;
 		const dbProductId = existingProduct?._id?.toString();
 		if (dbProductId !== productId) {
-			console.log('Product not found');
 			return res.status(404).json({
 				message: 'Product not found',
 			});
@@ -88,33 +97,26 @@ export const addProductToCart = async (req: ExtendedRequest, res: Response) => {
 
 		// Check for existing cart with the same user ID
 		const existingCart = await getUserCart(userId);
-		console.log('existingCart:', existingCart);
 
 		if (existingCart) {
 			//lineIndex indicates the position of the product in the lines array of the cart
 			const lineIndex = existingCart.lines.findIndex(
-				(line: ILineItem) => line.productId === productId //this is the productId at 71 line
+				(line: ILineItem) => line.productId === productId
 			);
-
-			console.log('lineIndex:', lineIndex);
 
 			if (lineIndex !== -1) {
 				existingCart.lines[lineIndex].quantity += 1; // Increment quantity by 1 if product already exists
-				console.log('Product already exists, incrementing quantity');
 			} else {
 				existingCart.lines.push({
 					productId: dbProductId,
 					price: dbProductPrice,
 					quantity: 1,
-				}); // if product doesn't exist in cart, add it to same cart
-				console.log('Product not in cart, adding it');
+				});
 			}
 
 			const upCart = await updateCart(existingCart);
-			console.log(upCart);
 
 			if (!upCart) {
-				console.log('Error updating cart');
 				return res.status(500).json({
 					message: 'Error updating cart',
 				});
@@ -122,9 +124,25 @@ export const addProductToCart = async (req: ExtendedRequest, res: Response) => {
 			await generateSubtotal(userId);
 			await generateTotalPrice(userId);
 			await roundCartValues(userId);
+
+			const userCart = await getUserCart(userId);
+			if (userCart === null) {
+				return res.status(404).json({ message: 'Cart not found' });
+			}
+			const showCart: IFormattedCart = {
+				_id: userCart._id,
+				userId: userCart.userId,
+				totalPrice: userCart.totalPrice,
+				lines: userCart.lines.map((line) => ({
+					productId: line.productId,
+					quantity: line.quantity,
+					price: line.price,
+					subtotal: line.subtotal,
+				})),
+			};
 			res.status(200).json({
 				message: 'Product quantity updated in cart',
-				cart: await getUserCart(userId),
+				cart: showCart,
 			});
 		} else {
 			//if productCart doesn't alredy exist, create a new cart
@@ -139,11 +157,8 @@ export const addProductToCart = async (req: ExtendedRequest, res: Response) => {
 				],
 			};
 
-			console.log('newCart:', newCart);
-
 			const createdCart = await addToUserCart(newCart);
 			if (!createdCart) {
-				console.log('Error creating cart');
 				return res.status(500).json({
 					message: 'Error creating cart',
 				});
@@ -151,13 +166,28 @@ export const addProductToCart = async (req: ExtendedRequest, res: Response) => {
 			await generateSubtotal(userId);
 			await generateTotalPrice(userId);
 			await roundCartValues(userId);
+
+			const userCart = await getUserCart(userId);
+			if (userCart === null) {
+				return res.status(404).json({ message: 'Cart not found' });
+			}
+			const showCart: IFormattedCart = {
+				_id: userCart._id,
+				userId: userCart.userId,
+				totalPrice: userCart.totalPrice,
+				lines: userCart.lines.map((line) => ({
+					productId: line.productId,
+					quantity: line.quantity,
+					price: line.price,
+					subtotal: line.subtotal,
+				})),
+			};
 			res.status(200).json({
 				message: 'Product added to cart',
-				cart: await getUserCart(userId),
+				cart: showCart,
 			});
 		}
 	} catch (error) {
-		console.log(error);
 		res.status(500).json({ message: 'Internal server error' });
 	}
 };
@@ -171,6 +201,9 @@ export const removeProductFromCart = async (
 	const userId = req.user?._id as string;
 	try {
 		const deletedItem = await removeItemFromUserCart(userId, productId);
+		await generateSubtotal(userId);
+		await generateTotalPrice(userId);
+		await roundCartValues(userId);
 		res.status(200).json({
 			message: 'Item deleted',
 			'deleted item': {

@@ -11,12 +11,7 @@ import { checkRoleMiddleware } from "../middleware/checkRoleMiddleware";
 
 export const router = Router();
 
-router.get(
-	'/',
-	authMiddleware,
-	checkRoleMiddleware(['admin', 'user']),
-	showOrders
-);
+router.get('/', authMiddleware, checkRoleMiddleware(['user']), showOrders);
 router.get(
 	'/:id',
 	authMiddleware,
