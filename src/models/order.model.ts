@@ -1,8 +1,12 @@
-import mongoose from "mongoose";
-import { IOrder, statusEnum } from "../validation/order.validation";
+import mongoose from 'mongoose';
+import { IOrder, statusEnum } from '../validation/order.validation';
+import { cartSchema } from './cart.model';
 
 const orderSchema = new mongoose.Schema<IOrder>(
 	{
+		userId: {
+			type: String,
+		},
 		shippingAddress: {
 			name: {
 				type: String,
@@ -40,4 +44,4 @@ const orderSchema = new mongoose.Schema<IOrder>(
 	},
 	{ timestamps: true }
 );
-export const Order = mongoose.model("Order", orderSchema);
+export const Order = mongoose.model('Order', orderSchema);

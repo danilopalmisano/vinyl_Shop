@@ -1,7 +1,7 @@
-import mongoose from "mongoose";
-import { z } from "zod";
+import mongoose from 'mongoose';
+import { z } from 'zod';
 
-export const roleEnum = ["user", "admin"] as const;
+export const roleEnum = ['user', 'admin'] as const;
 
 export const ZLoginSchema = z.object({
 	email: z.string().toLowerCase().email(),

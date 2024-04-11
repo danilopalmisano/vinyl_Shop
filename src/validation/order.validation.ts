@@ -4,12 +4,18 @@ import mongoose from 'mongoose';
 
 export const statusEnum = [
 	'order created',
+	'processing',
+	'packed',
 	'shipped',
 	'delivered',
 	'cancelled',
 ] as const;
 
 export const ZOrderSchema = z.object({
+	userId: z.string(),
+	cart: ZCartSchema,
+	totalPrice: z.number().positive(),
+	status: z.enum(statusEnum).default('order created'),
 	shippingAddress: z.object({
 		name: z.string().min(1),
 		surname: z.string().min(1),
@@ -19,8 +25,6 @@ export const ZOrderSchema = z.object({
 		zipCode: z.string(),
 		country: z.string(),
 	}),
-	cart: z.array(ZCartSchema),
-	status: z.enum(statusEnum).default('order created'),
 });
 
 export const ZOptionalOrderSchema = ZOrderSchema.partial();
