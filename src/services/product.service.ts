@@ -28,3 +28,48 @@ export const upProduct = async (
 export const delProduct = async (id: string): Promise<IProduct | null> => {
 	return await Product.findByIdAndDelete(id);
 };
+
+// Subtracts the stock quantity of a product by its ID
+export const subProductStockQuantityHandler = async (
+	productId: string,
+	delta: number,
+): Promise<IProduct | null> => {
+	return await Product.findByIdAndUpdate(
+		productId,
+		{ $inc: { stockQuantity: -delta } },
+		{ new: true },
+	);
+};
+
+// adds to the stock quantity of a product by its ID
+export const addProductStockQuantityHandler = async (
+	productId: string,
+	delta: number,
+): Promise<IProduct | null> => {
+	return await Product.findByIdAndUpdate(
+		productId,
+		{ $inc: { stockQuantity: delta } },
+		{ new: true },
+	);
+};
+
+//Updates the stock status of a product based on its current stock quantity
+export const setProductStockStatusHandler = async (
+	productId: string,
+): Promise<IProduct | null> => {
+	return await Product.findByIdAndUpdate(
+		productId,
+		{
+			$set: {
+				stockStatus: {
+					$cond: {
+						if: { $eq: ["$stockQuantity", 0] },
+						then: "out of stock",
+						else: "in stock",
+					},
+				},
+			},
+		},
+		{ new: true },
+	);
+};

@@ -1,7 +1,12 @@
 import { Order } from "../models/order.model";
 import { Product } from "../models/product.model";
-import { ILineItem } from "../validation/cart.validation";
+import { ICart, ILineItem } from "../validation/cart.validation";
 import { IOrder } from "../validation/order.validation";
+import {
+	findProductById,
+	setProductStockStatusHandler,
+	subProductStockQuantityHandler,
+} from "./product.service";
 
 export const getOrders = async (): Promise<IOrder[]> => {
 	return await Order.find();
@@ -9,6 +14,13 @@ export const getOrders = async (): Promise<IOrder[]> => {
 
 export const findOrder = async (id: string): Promise<IOrder | null> => {
 	return await Order.findById(id);
+};
+
+// Fetches order from cart id from the database
+export const getOrdersByCartIdHandler = async (
+	_id: string,
+): Promise<IOrder | null> => {
+	return await Order.findOne({ "cart._id": _id });
 };
 
 // Creates a new order in the database
@@ -42,11 +54,44 @@ export const calculateTotalCheckDataFromDB = async (
 
 export const orderStatusHandler = async (
 	orderId: string,
-	status: string
+	status: string,
 ): Promise<IOrder | null> => {
 	return await Order.findOneAndUpdate(
 		{ _id: orderId },
 		{ $set: { status: status } },
-		{ new: true }
+		{ new: true },
 	);
+};
+
+export const checkProductStock = async (
+	cartFromUserId: ICart,
+): Promise<Boolean | Error> => {
+	for (const line of cartFromUserId?.lines || []) {
+		const product = await findProductById(line.productId);
+		if (product?.stockQuantity! <= 0) {
+			await setProductStockStatusHandler(line.productId);
+			return new Error(
+				`Product with id ${line.productId} is either out of stock or we don' t have enough please check stock quantity or contact us for more information on large orders`,
+			);
+		}
+		if (product?.stockQuantity! < line.quantity) {
+			return new Error(
+				`Not enough stock for product with id ${line.productId}`,
+			);
+		}
+	}
+	return true;
+};
+
+export const updateStockQuantityDb = async (
+	cartFromUserId: ICart,
+): Promise<Boolean | Error> => {
+	for (const line of cartFromUserId?.lines || []) {
+		await subProductStockQuantityHandler(line.productId, line.quantity);
+		if (!subProductStockQuantityHandler(line.productId, line.quantity)) {
+			throw new Error();
+			return false;
+		}
+	}
+	return true;
 };

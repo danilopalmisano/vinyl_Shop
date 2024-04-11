@@ -5,7 +5,10 @@ import { ICart, ILineItem } from '../validation/cart.validation';
 export const getUserCart = async (userId: string): Promise<ICart | null> => {
 	return await Cart.findOne({ userId });
 };
-
+//get cart by id
+export const findCartById = async (id: string): Promise<ICart | null> => {
+	return await Cart.findById(id);
+};
 //add a product to a User cart
 export const addToUserCart = async (cartData: ICart): Promise<ICart> => {
 	return await Cart.create(cartData);

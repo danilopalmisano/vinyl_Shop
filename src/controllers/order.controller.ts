@@ -1,22 +1,23 @@
 import { Request, Response } from "express";
-import { getUserCart } from "../services/cart.service";
+import {
+	emptyUserCart,
+	findCartById,
+	getUserCart,
+} from "../services/cart.service";
 import {
 	calculateTotalCheckDataFromDB,
+	checkProductStock,
 	createOrderHandler,
 	findOrder,
 	getOrders,
+	getOrdersByCartIdHandler,
 	orderStatusHandler,
 } from "../services/order.service";
 import { ExtendedRequest } from "../middleware/authMiddleware";
-import {
-	IOrder,
-	ZOrderSchema,
-	ZShippingSchema,
-} from "../validation/order.validation";
+import { IOrder, ZShippingSchema } from "../validation/order.validation";
 import { fromZodError } from "zod-validation-error";
-import { ICart, ILineItem } from "../validation/cart.validation";
-import { IProduct } from "../validation/product.validation";
-import { Product } from "../models/product.model";
+import { ICart } from "../validation/cart.validation";
+import { subProductStockQuantityHandler } from "../services/product.service";
 
 //show all orders
 export const showOrders = async (req: Request, res: Response) => {
@@ -53,13 +54,25 @@ export const createOrder = async (req: ExtendedRequest, res: Response) => {
 		const body = req.body;
 		if (userId && body) {
 			const cartFromUserId = (await getUserCart(userId)) as ICart;
-			if (!cartFromUserId) {
+			const userCartId = cartFromUserId._id?.toString();
+			if (cartFromUserId === null) {
 				return res.status(400).json({ message: "Cart not found" });
 			}
 			if (cartFromUserId.lines.length === 0) {
 				return res.status(400).json({
 					message:
 						"Cart is empty, cannot place order with empty cart",
+				});
+			}
+			if (userCartId === undefined) {
+				return res.status(400).json({ message: "Cart not found" });
+			}
+			const orderWithThisCartIDExist = await getOrdersByCartIdHandler(
+				userCartId,
+			);
+			if (orderWithThisCartIDExist) {
+				return res.status(400).json({
+					message: "Order with this cart already exist",
 				});
 			}
 			const validationError = ZShippingSchema.safeParse(body);
@@ -69,6 +82,18 @@ export const createOrder = async (req: ExtendedRequest, res: Response) => {
 					.json(fromZodError(validationError.error).message);
 			}
 			const validateBody = validationError.data;
+
+			const checkStock = await checkProductStock(cartFromUserId);
+			if (checkStock instanceof Error) {
+				return res.status(400).json(checkStock.message);
+			}
+			for (const line of cartFromUserId?.lines || []) {
+				await subProductStockQuantityHandler(
+					line.productId,
+					line.quantity,
+				);
+			}
+
 			const realPrice = await calculateTotalCheckDataFromDB(
 				cartFromUserId.lines,
 			);
@@ -79,9 +104,10 @@ export const createOrder = async (req: ExtendedRequest, res: Response) => {
 				userId: userId,
 				cart: cartFromUserId,
 				shippingAddress: validateBody,
-				totalPrice: realPrice,
+				totalPrice: parseFloat(realPrice.toFixed(2)),
 			};
 			const newOrder = await createOrderHandler(orderData);
+			await emptyUserCart(userId);
 			res.status(200).json(newOrder);
 		}
 	} catch (error) {
@@ -92,10 +118,12 @@ export const createOrder = async (req: ExtendedRequest, res: Response) => {
 //update order status
 export const updateOrderStatus = async (req: Request, res: Response) => {
 	try {
-		const orderStatus = await orderStatusHandler(
-			req.params.id,
-			"delivered",
-		);
+		const cartId = req.params.id;
+		const findCart = await findCartById(cartId);
+		if (findCart === null) {
+			return res.status(400).json({ message: "Cart not found" });
+		}
+		const orderStatus = await orderStatusHandler(cartId, "delivered");
 		res.status(200).json(orderStatus);
 	} catch (error) {
 		res.status(400).json(error);
@@ -105,12 +133,20 @@ export const updateOrderStatus = async (req: Request, res: Response) => {
 //delete order status
 export const deletedOrderStatus = async (req: Request, res: Response) => {
 	try {
-		const orderStatus = await orderStatusHandler(
-			req.params.id,
-			"cancelled",
-		);
+		const cartId = req.params.id;
+		const findCart = await findCartById(cartId);
+		if (findCart === null) {
+			return res.status(400).json({ message: "Cart not found" });
+		}
+		for (const line of findCart?.lines || []) {
+			await subProductStockQuantityHandler(line.productId, line.quantity);
+		}
+
+		const orderStatus = await orderStatusHandler(cartId, "cancelled");
 		res.status(200).json(orderStatus);
 	} catch (error) {
 		res.status(400).json(error);
 	}
 };
+
+
