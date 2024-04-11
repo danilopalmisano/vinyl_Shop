@@ -1,5 +1,6 @@
 PUT http://localhost:3000/api/products/6614e967e140419a7fa22d24
 Content-Type: application/json
+Authorization: Bearer 1eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MTdlMWU3Zjg0NDkwNTcxNDIzMGM2NyIsImlhdCI6MTcxMjg0MTI3MX0.ha6hykDmWnq2MpiRIgjUJJvF_3qYfAmiR8NywU7eFUg
 
 {   
     "price": 25.98,
