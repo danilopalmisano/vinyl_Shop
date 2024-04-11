@@ -27,6 +27,6 @@ export type ILogin = z.infer<typeof ZLoginSchema>;
 export interface IFormattedUser {
 	username: String;
 	email: String;
-	role: String;
+	role: (typeof roleEnum)[number];
 	loggedIn: Boolean;
 }

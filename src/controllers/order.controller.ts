@@ -10,17 +10,31 @@ import {
 	orderStatusHandler,
 } from "../services/order.service";
 import { ExtendedRequest } from "../middleware/authMiddleware";
-import { IOrder, ZShippingSchema } from "../validation/order.validation";
+import {
+	IFormattedOrders,
+	IOrder,
+	ZShippingSchema,
+} from "../validation/order.validation";
 import { fromZodError } from "zod-validation-error";
 import { ICart } from "../validation/cart.validation";
-import { subProductStockQuantityHandler } from '../services/product.service';
-import { findUserById } from '../services/auth.service';
+import { subProductStockQuantityHandler } from "../services/product.service";
+import { findUserById } from "../services/auth.service";
 
 //show all orders
 export const showOrders = async (req: Request, res: Response) => {
 	try {
 		const orders = await getOrders();
-		res.status(200).json(orders);
+		const formattedOrders = orders.map((order) => {
+			const formattedOrder: IFormattedOrders = {
+				_id: order._id,
+				totalPrice: order.totalPrice,
+				status: order.status,
+				shippingAddress: order.shippingAddress,
+				cart: order.cart,
+			};
+			return formattedOrder;
+		});
+		res.status(200).json(formattedOrders);
 	} catch (error) {
 		res.status(400).json(error);
 	}
@@ -33,18 +47,26 @@ export const getOrderById = async (req: ExtendedRequest, res: Response) => {
 		const currentUser = await findUserById(userId);
 		const orderId = req.params.id;
 		if (!orderId) {
-			return res.status(400).json({ message: 'Missing order ID' });
+			return res.status(400).json({ message: "Missing order ID" });
 		}
-		const foundOrder = await findOrder(orderId);
-		if (!foundOrder) {
-			return res.status(404).json({ message: 'Order not found' });
+		const order = await findOrder(orderId);
+
+		if (!order) {
+			return res.status(404).json({ message: "Order not found" });
 		}
-		if (currentUser?.role === 'admin' || foundOrder.userId === userId) {
-			return res.status(200).json(foundOrder);
+		if (currentUser?.role === "admin" || order.userId === userId) {
+			const formattedOrder: IFormattedOrders = {
+				_id: order._id,
+				totalPrice: order.totalPrice,
+				status: order.status,
+				shippingAddress: order.shippingAddress,
+				cart: order.cart,
+			};
+			return res.status(200).json(formattedOrder);
 		}
-		return res.status(401).json({ message: 'Unauthorized' });
+		return res.status(401).json({ message: "Unauthorized" });
 	} catch (error) {
-		return res.status(500).json({ message: 'internal server error' });
+		return res.status(500).json({ message: "internal server error" });
 	}
 };
 
@@ -122,10 +144,13 @@ export const updateOrderStatus = async (req: Request, res: Response) => {
 		const orderId = req.params.id;
 		const existingOrder = await findOrder(orderId);
 		if (existingOrder === null) {
-			return res.status(400).json({ message: 'Order not found' });
+			return res.status(400).json({ message: "Order not found" });
 		}
-		const orderStatus = await orderStatusHandler(orderId, 'shipped');
-		res.status(200).json(orderStatus);
+		const orderStatus = await orderStatusHandler(orderId, "shipped");
+		res.status(200).json({
+			message: "Order status updated successfully",
+			orderStatus: orderStatus?.status,
+		});
 	} catch (error) {
 		res.status(400).json(error);
 	}
@@ -136,13 +161,16 @@ export const deletedOrderStatus = async (req: Request, res: Response) => {
 	try {
 		const orderId = req.params.id;
 		const existingOrder: IOrder | null = await findOrder(orderId);
-		if (existingOrder?.status === 'cancelled') {
-			return res.status(400).json({ message: 'Order already cancelled' });
+		if (existingOrder?.status === "cancelled") {
+			return res.status(400).json({ message: "Order already cancelled" });
 		}
 
-		const orderStatus = await orderStatusHandler(orderId, 'cancelled');
+		const orderStatus = await orderStatusHandler(orderId, "cancelled");
 		//to implement to re-add quantity to stock after deleted an order
-		res.status(200).json(orderStatus);
+		res.status(200).json({
+			message: "Order status updated successfully",
+			orderStatus: orderStatus?.status,
+		});
 	} catch (error) {
 		res.status(400).json(error);
 	}

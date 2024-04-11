@@ -21,3 +21,14 @@ export type IOptionalProduct = z.infer<typeof ZOptionalProductSchema>;
 export interface IProduct extends z.infer<typeof ZProductSchema> {
 	_id?: mongoose.Types.ObjectId;
 }
+
+export interface IFormattedProduct {
+	_id?: mongoose.Types.ObjectId;
+	name: string;
+	description?: string;
+	price: number;
+	images?: string[];
+	stockQuantity: number;
+	stockStatus: (typeof stockEnum)[number];
+	category?: string[];
+}

@@ -145,7 +145,7 @@ export const addProductToCart = async (req: ExtendedRequest, res: Response) => {
 				cart: showCart,
 			});
 		} else {
-			//if productCart doesn't alredy exist, create a new cart
+			//if productCart doesn't already exist, create a new cart
 			const newCart: ICart = {
 				userId,
 				lines: [
@@ -160,7 +160,7 @@ export const addProductToCart = async (req: ExtendedRequest, res: Response) => {
 			const createdCart = await addToUserCart(newCart);
 			if (!createdCart) {
 				return res.status(500).json({
-					message: 'Error creating cart',
+					message: "Error creating cart",
 				});
 			}
 			await generateSubtotal(userId);
@@ -169,7 +169,7 @@ export const addProductToCart = async (req: ExtendedRequest, res: Response) => {
 
 			const userCart = await getUserCart(userId);
 			if (userCart === null) {
-				return res.status(404).json({ message: 'Cart not found' });
+				return res.status(404).json({ message: "Cart not found" });
 			}
 			const showCart: IFormattedCart = {
 				_id: userCart._id,
@@ -183,7 +183,7 @@ export const addProductToCart = async (req: ExtendedRequest, res: Response) => {
 				})),
 			};
 			res.status(200).json({
-				message: 'Product added to cart',
+				message: "Product added to cart",
 				cart: showCart,
 			});
 		}

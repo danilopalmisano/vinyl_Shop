@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 import { z } from "zod";
 
-
 export const ZLineItemSchema = z.object({
 	productId: z.string(),
 	quantity: z.number().positive(),
@@ -29,10 +28,11 @@ export interface IFormattedCart {
 	_id?: mongoose.Types.ObjectId;
 	userId: String;
 	totalPrice?: Number;
-	lines: {
-		productId: string;
-		quantity: number;
-		price?: number;
-		subtotal?: number;
-	}[];
+	lines: IFormattedLines[];
+}
+export interface IFormattedLines {
+	productId: string;
+	quantity: number;
+	price?: number;
+	subtotal?: number;
 }

@@ -7,19 +7,34 @@ import {
 	upProduct,
 } from "../services/product.service";
 import {
+	IFormattedProduct,
 	ZOptionalProductSchema,
 	ZProductSchema,
-} from '../validation/product.validation';
-import { fromZodError } from 'zod-validation-error';
-import { Product } from '../models/product.model';
+} from "../validation/product.validation";
+import { fromZodError } from "zod-validation-error";
+import { Product } from "../models/product.model";
 
 //retrieve all products
 export const showProducts = async (req: Request, res: Response) => {
 	try {
 		const products = await getProducts();
-		res.status(200).json(products);
+		const formattedProducts: IFormattedProduct[] = products.map(
+			(product) => {
+				return {
+					_id: product._id,
+					name: product.name,
+					description: product.description,
+					price: product.price,
+					images: product.images,
+					stockQuantity: product.stockQuantity,
+					stockStatus: product.stockStatus,
+					category: product.category,
+				};
+			},
+		);
+		res.status(200).json(formattedProducts);
 	} catch (error) {
-		res.status(404).json({ message: 'no product yet' });
+		res.status(404).json({ message: "no product yet" });
 	}
 };
 
@@ -28,16 +43,26 @@ export const showSpecificProduct = async (req: Request, res: Response) => {
 	try {
 		const productId = req.params.id;
 		if (!productId) {
-			res.status(400).json({ message: 'missing product id' });
+			res.status(400).json({ message: "missing product id" });
 		}
 		const product = await findProductById(productId);
 		if (product) {
-			res.status(200).json(product);
+			const formattedProduct: IFormattedProduct = {
+				_id: product._id,
+				name: product.name,
+				description: product.description,
+				price: product.price,
+				images: product.images,
+				stockQuantity: product.stockQuantity,
+				stockStatus: product.stockStatus,
+				category: product.category,
+			};
+			res.status(200).json(formattedProduct);
 		} else {
-			throw new Error('product not found');
+			throw new Error("product not found");
 		}
 	} catch (error) {
-		return res.status(404).json({ message: 'product not found' });
+		return res.status(404).json({ message: "product not found" });
 	}
 };
 

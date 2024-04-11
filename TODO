@@ -68,5 +68,5 @@
     ☐ Implement product pagination
     ☐ Implement JWT refreshToken/set a timer to existing one
     ✔ Ensure auth info returns username, email, role and loggedIn @done(24-04-11 19:18)
-    ☐ Fix Json return values
+    ✔ Fix Json return values @done(24-04-11 22:15)
     
