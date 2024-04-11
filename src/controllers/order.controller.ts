@@ -1,15 +1,22 @@
 import { Request, Response } from "express";
 import { getUserCart } from "../services/cart.service";
 import {
+	calculateTotalCheckDataFromDB,
 	createOrderHandler,
 	findOrder,
 	getOrders,
 	orderStatusHandler,
 } from "../services/order.service";
 import { ExtendedRequest } from "../middleware/authMiddleware";
-import { IOrder, ZOrderSchema } from "../validation/order.validation";
+import {
+	IOrder,
+	ZOrderSchema,
+	ZShippingSchema,
+} from "../validation/order.validation";
 import { fromZodError } from "zod-validation-error";
-import { ICart } from "../validation/cart.validation";
+import { ICart, ILineItem } from "../validation/cart.validation";
+import { IProduct } from "../validation/product.validation";
+import { Product } from "../models/product.model";
 
 //show all orders
 export const showOrders = async (req: Request, res: Response) => {
@@ -49,14 +56,25 @@ export const createOrder = async (req: ExtendedRequest, res: Response) => {
 			if (!cartFromUserId) {
 				return res.status(400).json({ message: "Cart not found" });
 			}
-			const validationError = ZOrderSchema.safeParse(body);
+			if (cartFromUserId.lines.length === 0) {
+				return res.status(400).json({
+					message:
+						"Cart is empty, cannot place order with empty cart",
+				});
+			}
+			const validationError = ZShippingSchema.safeParse(body);
 			if (!validationError.success) {
 				return res
 					.status(400)
 					.json(fromZodError(validationError.error).message);
 			}
-			const validateBody = validationError.data.shippingAddress;
-			const realPrice = 0; //function to calcultate real price from real price fetched from database
+			const validateBody = validationError.data;
+			const realPrice = await calculateTotalCheckDataFromDB(
+				cartFromUserId.lines,
+			);
+			if (realPrice instanceof Error) {
+				return res.status(400).json(realPrice.message);
+			}
 			const orderData: IOrder = {
 				userId: userId,
 				cart: cartFromUserId,
@@ -76,7 +94,7 @@ export const updateOrderStatus = async (req: Request, res: Response) => {
 	try {
 		const orderStatus = await orderStatusHandler(
 			req.params.id,
-			"delivered"
+			"delivered",
 		);
 		res.status(200).json(orderStatus);
 	} catch (error) {
@@ -89,7 +107,7 @@ export const deletedOrderStatus = async (req: Request, res: Response) => {
 	try {
 		const orderStatus = await orderStatusHandler(
 			req.params.id,
-			"cancelled"
+			"cancelled",
 		);
 		res.status(200).json(orderStatus);
 	} catch (error) {

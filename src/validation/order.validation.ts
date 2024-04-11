@@ -10,21 +10,21 @@ export const statusEnum = [
 	"delivered",
 	"cancelled",
 ] as const;
-
+export const ZShippingSchema = z.object({
+	name: z.string().min(1),
+	surname: z.string().min(1),
+	addressLine: z.string(),
+	zipCode: z.string(),
+	city: z.string(),
+	country: z.string(),
+	state: z.string(),
+});
 export const ZOrderSchema = z.object({
 	userId: z.string(),
 	cart: ZCartSchema,
 	totalPrice: z.number().positive().optional(),
 	status: z.enum(statusEnum).default("order created").optional(),
-	shippingAddress: z.object({
-		name: z.string().min(1),
-		surname: z.string().min(1),
-		addressLine: z.string(),
-		zipCode: z.string(),
-		city: z.string(),
-		country: z.string(),
-		state: z.string(),
-	}),
+	shippingAddress: ZShippingSchema,
 });
 
 export const ZOptionalOrderSchema = ZOrderSchema.partial();

@@ -32,16 +32,16 @@ const orderSchema = new mongoose.Schema<IOrder>(
 		},
 		cart: [
 			{
-				type: mongoose.Schema.Types.ObjectId,
-				ref: 'cart',
+				type: cartSchema,
+				ref: "cart",
 			},
 		],
 		status: {
 			type: String,
 			enum: statusEnum,
-			default: 'order created',
+			default: "order created",
 		},
 	},
-	{ timestamps: true }
+	{ timestamps: true },
 );
 export const Order = mongoose.model('Order', orderSchema);

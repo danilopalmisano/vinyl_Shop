@@ -1,0 +1,13 @@
+POST http://localhost:3000/api/orders HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MTUyMGU3MDI2NDViZThjNzdmZjY0MCIsImlhdCI6MTcxMjY4ODc2OH0.LnMUEPp6wIRWokU71yzHnSMVHuujrkquibV823Q1eP0
+
+{
+		"name": "Mimmo",
+		"surname": "Modem",
+		"addressLine": "Via Plebby",
+		"zipCode": "95128",
+		"city": "Satania",
+		"country": "Satania",
+		"state": "ST"
+}
