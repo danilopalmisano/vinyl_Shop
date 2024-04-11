@@ -3,6 +3,10 @@ Content-Type: application/json
 
 {
 
-    "username": "Mimmo", "login":{ "email": "mimmomodem@example.com", "password": "salvesalvino123" }
+    "username": "Mimmo",
+    "login": {
+        "email": "mimmomodem@example.com",
+        "password": "salvesalvino123"
+        }
 
 }

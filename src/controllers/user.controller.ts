@@ -15,11 +15,13 @@ import {
 import { fromZodError } from "zod-validation-error";
 import { createAccessToken } from "../utility/commonAuthFunction";
 import { ExtendedRequest } from "../middleware/authMiddleware";
+
 // create User
 export const register = async (req: Request, res: Response) => {
 	try {
+		const body = req.body;
 		//parsing invalid req.body
-		const validationError = ZUserSchema.safeParse(req.body);
+		const validationError = ZUserSchema.safeParse(body);
 
 		if (!validationError.success) {
 			return res
@@ -28,19 +30,21 @@ export const register = async (req: Request, res: Response) => {
 		}
 
 		const user = validationError.data;
-		const userByEmail = await findUserByEmail(
-			validationError.data.login.email,
-		);
 
+		const userByEmail = await findUserByEmail(
+			validationError.data.login.email
+		);
 		if (userByEmail) {
-			return res.status(400).json({ message: "Email already exists!" });
+			return res.status(400).json({ message: 'Email already exists!' });
 		}
+
 		// will be implemented later fetching allowed email from DB
-		const adminValidName = ["admin@vinylshop.com"];
+		const adminValidName = ['admin@vinylshop.com'];
 		const newMail = user.login.email as string;
 		if (adminValidName.includes(newMail)) {
-			user.role = "admin";
+			user.role = 'admin';
 		}
+
 		const userCreated = await createUser(user);
 		res.status(200).json({
 			user: {
@@ -48,10 +52,11 @@ export const register = async (req: Request, res: Response) => {
 				email: userCreated.login?.email,
 			},
 		});
-	} catch (error: any) {
-		return res.status(500).json({ message: "Internal server error" });
+	} catch (error) {
+		return res.status(500).json({ message: 'Internal server error' });
 	}
 };
+
 //login User
 export const logIn = async (req: Request, res: Response) => {
 	try {
@@ -103,6 +108,7 @@ export const logIn = async (req: Request, res: Response) => {
 		res.status(500).json({ error: err.message });
 	}
 };
+
 //logout User
 export const logOut = async (req: ExtendedRequest, res: Response) => {
 	const validationError = ZOptionalUser.safeParse({
