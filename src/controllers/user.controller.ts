@@ -7,14 +7,15 @@ import {
 	updateUserLoggedInStatus,
 } from "../services/auth.service";
 import {
+	IFormattedUser,
 	IUser,
 	ZLoginSchema,
 	ZOptionalUser,
 	ZUserSchema,
-} from "../validation/user.validation";
-import { fromZodError } from "zod-validation-error";
-import { createAccessToken } from "../utility/commonAuthFunction";
-import { ExtendedRequest } from "../middleware/authMiddleware";
+} from '../validation/user.validation';
+import { fromZodError } from 'zod-validation-error';
+import { createAccessToken } from '../utility/commonAuthFunction';
+import { ExtendedRequest } from '../middleware/authMiddleware';
 
 // create User
 export const register = async (req: Request, res: Response) => {
@@ -71,7 +72,7 @@ export const logIn = async (req: Request, res: Response) => {
 			req.body as {
 				email: string;
 				password: string;
-			},
+			}
 		);
 		if (!validationError.success) {
 			return res
@@ -86,28 +87,28 @@ export const logIn = async (req: Request, res: Response) => {
 		if (!userByEmail) {
 			return res
 				.status(400)
-				.json({ messageAt: "Incorrect email or password" });
+				.json({ messageAt: 'Incorrect email or password' });
 		}
 
 		const validPassword = await bcrypt.compare(
 			user.password,
-			userByEmail.login.password!,
+			userByEmail.login.password!
 		);
 
 		if (!validPassword) {
 			return res
 				.status(400)
-				.json({ messagePW: "Incorrect email or password" });
+				.json({ messagePW: 'Incorrect email or password' });
 		}
 
 		const id = userByEmail._id?.toString();
 
 		if (id) {
-			const accessToken = createAccessToken(id, "30s");
+			const accessToken = createAccessToken(id, '30s');
 			updateUserLoggedInStatus(id, true);
 
 			return res.status(200).json({
-				message: "You are logged in!",
+				message: 'You are logged in!',
 				accessToken: accessToken,
 			});
 		}
@@ -132,12 +133,12 @@ export const logOut = async (req: ExtendedRequest, res: Response) => {
 		if (id) {
 			const loggedIn = await findUserByEmail(id);
 			if (loggedIn?.login.loggedIn === false) {
-				return res.status(400).json({ message: "Already logged out" });
+				return res.status(400).json({ message: 'Already logged out' });
 			}
 			await updateUserLoggedInStatus(id, false);
 		}
 
-		return res.status(200).json({ message: "Successfully logged out" });
+		return res.status(200).json({ message: 'Successfully logged out' });
 	} catch (error) {
 		console.error(error);
 		res.status(500).send(error);
@@ -151,9 +152,17 @@ export const authInfo = async (req: ExtendedRequest, res: Response) => {
 		if (id) {
 			const account = await findUserById(id);
 			if (!account) {
-				return res.status(404).json();
+				return res.status(404).json('account not found');
 			}
-			return res.status(200).json(account);
+			const showAccount: IFormattedUser = {
+				username: account.username,
+				email: account.login.email as string,
+				role: account.role,
+				loggedIn: account.login.loggedIn as boolean,
+			};
+			return res.status(200).json(showAccount);
 		}
-	} catch (error) {}
+	} catch (error) {
+		return res.status(500).json({ message: 'internal server error' });
+	}
 };

@@ -1,9 +1,5 @@
 import { Request, Response } from "express";
-import {
-	emptyUserCart,
-	findCartById,
-	getUserCart,
-} from "../services/cart.service";
+import { emptyUserCart, getUserCart } from '../services/cart.service';
 import {
 	calculateTotalCheckDataFromDB,
 	checkProductStock,
@@ -17,36 +13,38 @@ import { ExtendedRequest } from "../middleware/authMiddleware";
 import { IOrder, ZShippingSchema } from "../validation/order.validation";
 import { fromZodError } from "zod-validation-error";
 import { ICart } from "../validation/cart.validation";
-import {
-	addProductStockQuantityHandler,
-	subProductStockQuantityHandler,
-} from '../services/product.service';
+import { subProductStockQuantityHandler } from '../services/product.service';
+import { findUserById } from '../services/auth.service';
 
 //show all orders
 export const showOrders = async (req: Request, res: Response) => {
 	try {
-		const order = await getOrders();
-		res.status(200).json(order);
+		const orders = await getOrders();
+		res.status(200).json(orders);
 	} catch (error) {
 		res.status(400).json(error);
 	}
 };
 
 //show order by id
-export const getOrderById = async (req: Request, res: Response) => {
+export const getOrderById = async (req: ExtendedRequest, res: Response) => {
 	try {
+		const userId = req.user?._id as string;
+		const currentUser = await findUserById(userId);
 		const orderId = req.params.id;
 		if (!orderId) {
 			return res.status(400).json({ message: 'Missing order ID' });
 		}
 		const foundOrder = await findOrder(orderId);
-		if (foundOrder) {
-			return res.status(200).json(foundOrder);
-		} else {
-			throw new Error('Order not found');
+		if (!foundOrder) {
+			return res.status(404).json({ message: 'Order not found' });
 		}
+		if (currentUser?.role === 'admin' || foundOrder.userId === userId) {
+			return res.status(200).json(foundOrder);
+		}
+		return res.status(401).json({ message: 'Unauthorized' });
 	} catch (error) {
-		return res.status(404).json({ message: 'Order not found' });
+		return res.status(500).json({ message: 'internal server error' });
 	}
 };
 

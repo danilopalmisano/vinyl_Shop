@@ -25,3 +25,14 @@ export interface ICart extends z.infer<typeof ZCartSchema> {
 	_id?: mongoose.Types.ObjectId;
 }
 
+export interface IFormattedCart {
+	_id?: mongoose.Types.ObjectId;
+	userId: String;
+	totalPrice?: Number;
+	lines: {
+		productId: string;
+		quantity: number;
+		price?: number;
+		subtotal?: number;
+	}[];
+}

@@ -1,14 +1,14 @@
-import { z } from "zod";
-import { ZCartSchema } from "./cart.validation.js";
-import mongoose from "mongoose";
+import { z } from 'zod';
+import { ZCartSchema } from './cart.validation.js';
+import mongoose from 'mongoose';
 
 export const statusEnum = [
-	"order created",
-	"processing",
-	"packed",
-	"shipped",
-	"delivered",
-	"cancelled",
+	'order created',
+	'processing',
+	'packed',
+	'shipped',
+	'delivered',
+	'cancelled',
 ] as const;
 export const ZShippingSchema = z.object({
 	name: z.string().min(1),
@@ -23,7 +23,7 @@ export const ZOrderSchema = z.object({
 	userId: z.string(),
 	cart: ZCartSchema,
 	totalPrice: z.number().positive().optional(),
-	status: z.enum(statusEnum).default("order created").optional(),
+	status: z.enum(statusEnum).default('order created').optional(),
 	shippingAddress: ZShippingSchema,
 });
 
