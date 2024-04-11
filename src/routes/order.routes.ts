@@ -11,8 +11,28 @@ import { checkRoleMiddleware } from "../middleware/checkRoleMiddleware";
 
 export const router = Router();
 
-router.get("/", checkRoleMiddleware(["admin", "user"]), showOrders);
-router.get("/:id", checkRoleMiddleware(["admin", "user"]), getOrderById);
+router.get(
+	'/',
+	authMiddleware,
+	checkRoleMiddleware(['admin', 'user']),
+	showOrders
+);
+router.get(
+	'/:id',
+	authMiddleware,
+	checkRoleMiddleware(['admin', 'user']),
+	getOrderById
+);
 router.post("/", authMiddleware, checkRoleMiddleware(["user"]), createOrder);
-router.put("/:id", checkRoleMiddleware(["admin"]), updateOrderStatus); //to implement
-router.delete("/:id", checkRoleMiddleware(["admin"]), deletedOrderStatus); //to implement
+router.put(
+	'/:id',
+	authMiddleware,
+	checkRoleMiddleware(['admin']),
+	updateOrderStatus
+);
+router.delete(
+	'/:id',
+	authMiddleware,
+	checkRoleMiddleware(['admin']),
+	deletedOrderStatus
+);
