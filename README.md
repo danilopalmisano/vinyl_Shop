@@ -130,11 +130,11 @@ Nodemon will automatically watch for changes in your TypeScript files and restar
 
 | Feature                      |       Endpoint        |  Coded?  | PrivateRoutes |
 | ---------------------------- | :-------------------: | :------: | :-----------: |
-| **Show Current User Orders** |    GET /api/order     | &#10006; |  USER/ADMIN   |
-| **Show a specific Order**    |  GET /api/order/:id   | &#10006; |  USER/ADMIN   |
-| **Add an Order**             |    POST /api/order    | &#10006; |     USER      |
-| **Edit an Order**            |  PUT /api/order/:id   | &#10006; |     ADMIN     |
-| **Delete an Order**          | DELETE /api/order/:id | &#10006; |     ADMIN     |
+| **Show Current User Orders** |    GET /api/order     | &#10004; |  USER/ADMIN   |
+| **Show a specific Order**    |  GET /api/order/:id   | &#10004; |  USER/ADMIN   |
+| **Add an Order**             |    POST /api/order    | &#10004; |     USER      |
+| **Edit an Order**            |  PUT /api/order/:id   | &#10004; |     ADMIN     |
+| **Delete an Order**          | DELETE /api/order/:id | &#10004; |     ADMIN     |
 
 # Interfaces
 
