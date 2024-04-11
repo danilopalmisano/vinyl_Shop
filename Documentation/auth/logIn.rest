@@ -2,6 +2,20 @@ POST http://localhost:3000/api/auth/login
 Content-Type: application/json
 
 {
-    "email": "mimmomodem@example.com", 
+    "email": "mimmojr@example.com", 
     "password": "salvesalvino123" 
 }
+
+###
+
+# mimmo access token (user):
+# eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MTdlYmNkMDg4MjI4MzYxYWExZjlmMCIsImlhdCI6MTcxMjg0MzkxOX0.OsuMAnTZLg7GPNbO_JHMSQzJUGeYf7G-t6VHybI0ZYw
+
+# mimmojr access token (user):
+# eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MTgwM2NmOGY4OThmYWEyZDc4MWZjYyIsImlhdCI6MTcxMjg0OTkxNX0.NFNwlPAIsB1jno23H5NhL1jMjof4MFC8ZSw5uyz4FRI
+
+# saro access token (user):
+# eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MTdlYmI5MDg4MjI4MzYxYWExZjllYyIsImlhdCI6MTcxMjg0NjEzNH0.E79z8ltWAgsGGh58tP82oTbaF-0A5hfBs3-Qgv2o1hY
+
+# superMimmo access token (admin):
+# eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MTdlYzc0MDg4MjI4MzYxYWExZjlmNCIsImlhdCI6MTcxMjg0NDEyNH0.IF-UauQ7oQr3wbx-7Kvevx-UKS9UBvYo4chAMe_rUvI

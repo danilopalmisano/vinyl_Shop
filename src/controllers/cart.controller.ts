@@ -171,6 +171,9 @@ export const removeProductFromCart = async (
 	const userId = req.user?._id as string;
 	try {
 		const deletedItem = await removeItemFromUserCart(userId, productId);
+		await generateSubtotal(userId);
+		await generateTotalPrice(userId);
+		await roundCartValues(userId);
 		res.status(200).json({
 			message: 'Item deleted',
 			'deleted item': {

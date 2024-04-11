@@ -19,9 +19,8 @@ import { ExtendedRequest } from "../middleware/authMiddleware";
 // create User
 export const register = async (req: Request, res: Response) => {
 	try {
-		const body = req.body;
 		//parsing invalid req.body
-		const validationError = ZUserSchema.safeParse(body);
+		const validationError = ZUserSchema.safeParse(req.body);
 
 		if (!validationError.success) {
 			return res
@@ -44,8 +43,16 @@ export const register = async (req: Request, res: Response) => {
 		if (adminValidName.includes(newMail)) {
 			user.role = 'admin';
 		}
-
-		const userCreated = await createUser(user);
+		const newUser: IUser = {
+			username: user.username,
+			login: {
+				email: user.login.email,
+				password: user.login.password,
+				loggedIn: false,
+			},
+			role: user.role,
+		};
+		const userCreated = await createUser(newUser);
 		res.status(200).json({
 			user: {
 				username: userCreated.username,

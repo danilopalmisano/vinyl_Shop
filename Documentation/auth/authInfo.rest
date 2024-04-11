@@ -1,3 +1,3 @@
 GET http://localhost:3000/api/auth/user
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MTdlMWU3Zjg0NDkwNTcxNDIzMGM2NyIsImlhdCI6MTcxMjg0MTI3MX0.ha6hykDmWnq2MpiRIgjUJJvF_3qYfAmiR8NywU7eFUg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MTdlYzc0MDg4MjI4MzYxYWExZjlmNCIsImlhdCI6MTcxMjg0NDEyNH0.IF-UauQ7oQr3wbx-7Kvevx-UKS9UBvYo4chAMe_rUvI
 ###
