@@ -28,7 +28,6 @@
 	- [ Order Interface ](#-order-interface-)
 		- [Status Enum](#status-enum)
 	- [ Decode Token Interface ](#-decode-token-interface-)
-- [Project Tree](#project-tree)
 - [Credits](#credits)
 
 ### Installation:
