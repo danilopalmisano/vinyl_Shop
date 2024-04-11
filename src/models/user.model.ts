@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { ILogin, IUser, roleEnum } from '../validation/user.validation';
+import { IUser, roleEnum } from '../validation/user.validation';
 import { hashStuff } from '../utility/commonAuthFunction';
 import { LoginSchema } from './login.model';
 
@@ -10,14 +10,6 @@ const userSchema = new mongoose.Schema<IUser>({
 	login: {
 		type: LoginSchema,
 		ref: 'login',
-	},
-	/*cart: {
-		type: mongoose.Schema.Types.ObjectId,
-		ref: "cart",
-		required: true,
-	},*/
-	orders: {
-		type: String,
 	},
 	role: {
 		type: String,

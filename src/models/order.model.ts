@@ -10,12 +10,9 @@ const orderSchema = new mongoose.Schema<IOrder>(
 			surname: {
 				type: String,
 			},
-			adressLine1: {
+			addressLine: {
 				type: String,
 			},
-			// addressLine2: {
-			// 	type: String,
-			//},
 			zipCode: {
 				type: String,
 			},
@@ -29,24 +26,16 @@ const orderSchema = new mongoose.Schema<IOrder>(
 				type: String,
 			},
 		},
-		// paymentDetails: {
-		// 	type: {
-		// 		type: String,
-		// 	},
-		// 	maskedNumber: {
-		// 		type: String,
-		// 	},
-		// },
 		cart: [
 			{
 				type: mongoose.Schema.Types.ObjectId,
-				ref: "cart",
+				ref: 'cart',
 			},
 		],
 		status: {
 			type: String,
 			enum: statusEnum,
-			default: "order created",
+			default: 'order created',
 		},
 	},
 	{ timestamps: true }
