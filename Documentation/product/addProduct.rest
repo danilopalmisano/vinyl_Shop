@@ -5,7 +5,7 @@ Content-Type: application/json
     "name": "lptitle4",
     "description": "description4",
     "price": 201.56,
-    "stockQuantity": 2,
+    "stockQuantity": 10,
     "stockStatus": "in stock",
     "category": ["hip-hop","techno"]
 }
