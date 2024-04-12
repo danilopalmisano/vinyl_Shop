@@ -8,11 +8,18 @@ import {
 	subProductStockQuantityHandler,
 } from "./product.service";
 
-export const getOrders = async (): Promise<IOrder[]> => {
-	return await Order.find();
+export const getOrders = async (
+	skip: number,
+	limit: number,
+): Promise<IOrder[]> => {
+	return await Order.find().skip(skip).limit(limit);
 };
-export const getUserOrders = async (userId: string): Promise<IOrder[]> => {
-	return await Order.find({ userId });
+export const getUserOrders = async (
+	userId: string,
+	skip: number,
+	limit: number,
+): Promise<IOrder[]> => {
+	return await Order.find({ userId }).skip(skip).limit(limit);
 };
 
 export const findOrder = async (id: string): Promise<IOrder | null> => {

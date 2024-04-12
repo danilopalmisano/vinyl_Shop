@@ -30,12 +30,10 @@ const orderSchema = new mongoose.Schema<IOrder>(
 				type: String,
 			},
 		},
-		cart: [
-			{
-				type: cartSchema,
-				ref: "cart",
-			},
-		],
+		cart: {
+			type: cartSchema,
+			ref: "cart",
+		},
 		status: {
 			type: String,
 			enum: statusEnum,
