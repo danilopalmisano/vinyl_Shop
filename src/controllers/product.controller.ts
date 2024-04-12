@@ -18,7 +18,13 @@ import mongoose from "mongoose";
 //retrieve all products
 export const showProducts = async (req: Request, res: Response) => {
 	try {
-		const products = await getProducts();
+		const limit = Number(req.query.limit) || 10;
+		const page = Number(req.query.page) || 1;
+		if (page < 1 || limit < 1) {
+			return res.status(400).json({ message: "invalid page or limit" });
+		}
+		const skip = (page - 1) * limit;
+		const products = await getProducts(skip, limit);
 		const formattedProducts: IFormattedProduct[] = products.map(
 			(product) => {
 				return {
