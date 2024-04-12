@@ -20,13 +20,22 @@ import {
 } from "../validation/order.validation";
 import { fromZodError } from "zod-validation-error";
 import { ICart } from "../validation/cart.validation";
-import { subProductStockQuantityHandler } from "../services/product.service";
+import {
+	addProductStockQuantityHandler,
+	subProductStockQuantityHandler,
+} from "../services/product.service";
 import { findUserById } from "../services/auth.service";
 import mongoose from "mongoose";
 
 //show all orders
 export const showOrders = async (req: ExtendedRequest, res: Response) => {
 	try {
+		const limit = Number(req.query.limit) || 10;
+		const page = Number(req.query.page) || 1;
+		if (page < 1 || limit < 1) {
+			return res.status(400).json({ message: "invalid page or limit" });
+		}
+		const skip = (page - 1) * limit;
 		const userId = req.user?._id as string;
 		const currentUser = await findUserById(userId);
 		if (!currentUser) {
@@ -34,10 +43,10 @@ export const showOrders = async (req: ExtendedRequest, res: Response) => {
 		}
 		let orders: IOrder[] = [];
 		if (currentUser.role === "admin") {
-			orders = await getOrders();
+			orders = await getOrders(skip, limit);
 		}
 		if (currentUser.role === "user") {
-			orders = await getUserOrders(userId);
+			orders = await getUserOrders(userId, skip, limit);
 		}
 		const formattedOrders = orders.map((order) => {
 			const formattedOrder: IFormattedOrders = {
@@ -213,8 +222,10 @@ export const deletedOrderStatus = async (req: Request, res: Response) => {
 		}
 
 		const orderStatus = await orderStatusHandler(orderId, "cancelled");
-		//update product stock quantity back to original value after order is cancelled
-
+		for (const line of existingOrder?.cart?.lines || []) {
+			await addProductStockQuantityHandler(line.productId, line.quantity);
+		}
+		
 		res.status(200).json({
 			message: "Order status updated successfully",
 			orderStatus: orderStatus?.status,

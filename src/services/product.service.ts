@@ -2,8 +2,11 @@ import { Product } from "../models/product.model";
 import { IOptionalProduct, IProduct } from '../validation/product.validation';
 
 //show Products
-export const getProducts = async (): Promise<IProduct[]> => {
-	return await Product.find();
+export const getProducts = async (
+	skip: number,
+	limit: number,
+): Promise<IProduct[]> => {
+	return await Product.find().skip(skip).limit(limit);
 };
 
 //find Product by id
