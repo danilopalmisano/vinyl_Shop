@@ -158,6 +158,9 @@ export const authInfo = async (req: ExtendedRequest, res: Response) => {
 		const id = req.user?._id;
 		if (id) {
 			const account = await findUserById(id);
+			if (!account?.login.loggedIn) {
+				return res.status(401).json({ message: "Unauthorized" });
+			}
 			if (!account) {
 				return res.status(404).json('account not found');
 			}
