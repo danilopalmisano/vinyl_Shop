@@ -44,6 +44,13 @@ export const register = async (req: Request, res: Response) => {
 		if (adminValidName.includes(newMail)) {
 			user.role = 'admin';
 		}
+		if (
+			newMail.includes("@vinylshop.com") &&
+			newMail.split("@")[0] !== "admin"
+		) {
+			return res.status(401).json({ message: "Unauthorized" });
+		}
+
 		const newUser: IUser = {
 			username: user.username,
 			login: {

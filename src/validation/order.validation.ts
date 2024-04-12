@@ -30,7 +30,6 @@ export const ZOrderSchema = z.object({
 	status: z.enum(statusEnum).default("order created").optional(),
 	shippingAddress: ZShippingSchema,
 });
-
 export const ZOptionalOrderSchema = ZOrderSchema.partial();
 
 //Interface

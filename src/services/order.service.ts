@@ -11,6 +11,9 @@ import {
 export const getOrders = async (): Promise<IOrder[]> => {
 	return await Order.find();
 };
+export const getUserOrders = async (userId: string): Promise<IOrder[]> => {
+	return await Order.find({ userId });
+};
 
 export const findOrder = async (id: string): Promise<IOrder | null> => {
 	return await Order.findById(id);

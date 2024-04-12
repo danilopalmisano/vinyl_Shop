@@ -158,7 +158,12 @@ export const deleteProduct = async (req: Request, res: Response) => {
 				message:
 					"Product id is not valid, please provide a valid product id",
 			});
-		await delProduct(_id);
+		const deletedProduct = await delProduct(_id);
+		if (!deletedProduct) {
+			return res.status(404).json({
+				message: "can not delete a product that is not on the database",
+			});
+		}
 		res.status(200).json({ message: "product deleted successfully" });
 	} catch (error) {
 		return res.status(500).json({ message: "internal server error" });

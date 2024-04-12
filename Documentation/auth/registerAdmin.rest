@@ -3,6 +3,6 @@ Content-Type: application/json
 
 {
 
-    "username": "superMimmo", "login":{ "email": "admin@vinylshop.com", "password": "salvesalvino123" }
+    "username": "supersaro", "login":{ "email": "saro@vinylshop.com", "password": "salvesalvino123" }
 
 }

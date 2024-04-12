@@ -1,3 +1,3 @@
-DELETE http://localhost:3000/api/products/66176618daba10f0be594997347c
+DELETE http://localhost:3000/api/products/6618da9210f0be594997
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MThkODI3NmU5NmJiZmZkOThjZjZmMSIsImlhdCI6MTcxMjkwNDI1NH0.mPRywYcITGjkPMkglxisL_PjJC0oj14QMVTKpxuvQrc

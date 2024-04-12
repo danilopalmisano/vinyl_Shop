@@ -1,2 +1,7 @@
-PUT http://localhost:3000/api/orders/6617e202445b97e66b22bde8
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MTUzZTFlMmQ5NGFjMjZhYTk3NGFlYiIsImlhdCI6MTcxMjg1OTkzN30.dZ1R_uB9plOGO_4II8b2RM2ILapM0DGzDn4T0wMCIcA
+PUT http://localhost:3000/api/orders/6618e62b5a8c78605a27f7d7
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MThkODI3NmU5NmJiZmZkOThjZjZmMSIsImlhdCI6MTcxMjkwNDI1NH0.mPRywYcITGjkPMkglxisL_PjJC0oj14QMVTKpxuvQrc
+
+{
+    "status": "cancelled"
+}

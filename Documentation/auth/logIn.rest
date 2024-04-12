@@ -2,7 +2,7 @@ POST http://localhost:3000/api/auth/login
 Content-Type: application/json
 
 {
-    "email": "mimmo@example.com", 
+    "email": "cammelo@example.com", 
     "password": "salvesalvino123" 
 }
 
@@ -13,3 +13,6 @@ Content-Type: application/json
 
 # superMimmo access token (admin):
 # eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MThkODI3NmU5NmJiZmZkOThjZjZmMSIsImlhdCI6MTcxMjkwNDI1NH0.mPRywYcITGjkPMkglxisL_PjJC0oj14QMVTKpxuvQrc
+
+#cammelo user
+# eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MTkyYTA0NTRkZWMyMjE5ZGY3ZGEzOSIsImlhdCI6MTcxMjkyNTIwOH0.RzHygVFcHfi8Mk_THPhUSnsHRqZRNCd_0AiXCyRngYE

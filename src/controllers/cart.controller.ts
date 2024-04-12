@@ -59,7 +59,11 @@ export const getCart = async (req: ExtendedRequest, res: Response) => {
 
 		const userCart = await getUserCart(userById);
 		if (userCart === null) {
-			return res.status(404).json({ message: 'Cart not found' });
+			return res.status(200).json({
+				userId: userById,
+				lines: [],
+				totalPrice: 0,
+			});
 		}
 		const showCart: IFormattedCart = {
 			_id: userCart._id,
@@ -74,7 +78,7 @@ export const getCart = async (req: ExtendedRequest, res: Response) => {
 		};
 		res.status(200).json(showCart);
 	} catch (error) {
-		res.status(500).json({ message: 'Internal server error' });
+		res.status(500).json({ message: "Internal server error" });
 	}
 };
 
@@ -91,17 +95,16 @@ export const addProductToCart = async (req: ExtendedRequest, res: Response) => {
 		const dbProductId = existingProduct?._id?.toString();
 		if (dbProductId !== productId) {
 			return res.status(404).json({
-				message: 'Product not found',
+				message: "Product not found",
 			});
 		}
 
 		// Check for existing cart with the same user ID
 		const existingCart = await getUserCart(userId);
-
 		if (existingCart) {
 			//lineIndex indicates the position of the product in the lines array of the cart
 			const lineIndex = existingCart.lines.findIndex(
-				(line: ILineItem) => line.productId === productId
+				(line: ILineItem) => line.productId === productId,
 			);
 
 			if (lineIndex !== -1) {
@@ -118,7 +121,7 @@ export const addProductToCart = async (req: ExtendedRequest, res: Response) => {
 
 			if (!upCart) {
 				return res.status(500).json({
-					message: 'Error updating cart',
+					message: "Error updating cart",
 				});
 			}
 			await generateSubtotal(userId);
@@ -127,7 +130,7 @@ export const addProductToCart = async (req: ExtendedRequest, res: Response) => {
 
 			const userCart = await getUserCart(userId);
 			if (userCart === null) {
-				return res.status(404).json({ message: 'Cart not found' });
+				return res.status(404).json({ message: "Cart not found" });
 			}
 			const showCart: IFormattedCart = {
 				_id: userCart._id,
@@ -141,7 +144,7 @@ export const addProductToCart = async (req: ExtendedRequest, res: Response) => {
 				})),
 			};
 			res.status(200).json({
-				message: 'Product quantity updated in cart',
+				message: "Product quantity updated in cart",
 				cart: showCart,
 			});
 		} else {
@@ -188,25 +191,45 @@ export const addProductToCart = async (req: ExtendedRequest, res: Response) => {
 			});
 		}
 	} catch (error) {
-		res.status(500).json({ message: 'Internal server error' });
+		res.status(500).json({ message: "Internal server error" });
 	}
 };
 
 //remove product from a User cart
 export const removeProductFromCart = async (
 	req: ExtendedRequest,
-	res: Response
+	res: Response,
 ) => {
 	const productId = req.params.id;
 	const userId = req.user?._id as string;
+	/*const productExistInDB = await findProductById(productId);
+	if (!productExistInDB) {
+		return res.status(404).json({
+			message: "Product not found",
+		});
+	}*/
+	const prodExistInCart = await getUserCart(userId);
+	if (!prodExistInCart) {
+		return res.status(404).json({
+			message: "Cart not found",
+		});
+	}
+	const lineIndex = prodExistInCart.lines.findIndex(
+		(line: ILineItem) => line.productId === productId,
+	);
+	if (lineIndex === -1) {
+		return res.status(404).json({
+			message: "Product not found in cart",
+		});
+	}
 	try {
 		const deletedItem = await removeItemFromUserCart(userId, productId);
 		await generateSubtotal(userId);
 		await generateTotalPrice(userId);
 		await roundCartValues(userId);
 		res.status(200).json({
-			message: 'Item deleted',
-			'deleted item': {
+			message: "Item deleted",
+			"deleted item": {
 				productId: deletedItem?.productId,
 				quantity: deletedItem?.quantity,
 			},

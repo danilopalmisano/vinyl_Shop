@@ -7,6 +7,7 @@ import {
 	findOrder,
 	getOrders,
 	getOrdersByCartIdHandler,
+	getUserOrders,
 	orderStatusHandler,
 	updateProductStock,
 } from "../services/order.service";
@@ -14,22 +15,30 @@ import { ExtendedRequest } from "../middleware/authMiddleware";
 import {
 	IFormattedOrders,
 	IOrder,
+	ZOptionalOrderSchema,
 	ZShippingSchema,
 } from "../validation/order.validation";
 import { fromZodError } from "zod-validation-error";
-import { ICart, ILineItem } from "../validation/cart.validation";
-import {
-	addProductStockQuantityHandler,
-	findProductById,
-	subProductStockQuantityHandler,
-} from "../services/product.service";
+import { ICart } from "../validation/cart.validation";
+import { subProductStockQuantityHandler } from "../services/product.service";
 import { findUserById } from "../services/auth.service";
 import mongoose from "mongoose";
 
 //show all orders
-export const showOrders = async (req: Request, res: Response) => {
+export const showOrders = async (req: ExtendedRequest, res: Response) => {
 	try {
-		const orders = await getOrders();
+		const userId = req.user?._id as string;
+		const currentUser = await findUserById(userId);
+		if (!currentUser) {
+			return res.status(400).json({ message: "User not found" });
+		}
+		let orders: IOrder[] = [];
+		if (currentUser.role === "admin") {
+			orders = await getOrders();
+		}
+		if (currentUser.role === "user") {
+			orders = await getUserOrders(userId);
+		}
 		const formattedOrders = orders.map((order) => {
 			const formattedOrder: IFormattedOrders = {
 				_id: order._id,
@@ -158,6 +167,15 @@ export const createOrder = async (req: ExtendedRequest, res: Response) => {
 export const updateOrderStatus = async (req: Request, res: Response) => {
 	try {
 		const orderId = req.params.id;
+		const status = req.body.status;
+		const validateStatus = ZOptionalOrderSchema.safeParse({
+			status: status,
+		});
+		if (!validateStatus.success) {
+			return res
+				.status(400)
+				.json(fromZodError(validateStatus.error).message);
+		}
 		const isValidId = mongoose.Types.ObjectId.isValid(orderId);
 		if (!isValidId)
 			return res.status(400).json({
@@ -167,7 +185,7 @@ export const updateOrderStatus = async (req: Request, res: Response) => {
 		if (existingOrder === null) {
 			return res.status(400).json({ message: "Order not found" });
 		}
-		const orderStatus = await orderStatusHandler(orderId, "shipped");
+		const orderStatus = await orderStatusHandler(orderId, status);
 		res.status(200).json({
 			message: "Order status updated successfully",
 			orderStatus: orderStatus?.status,
@@ -187,6 +205,9 @@ export const deletedOrderStatus = async (req: Request, res: Response) => {
 				message: "Missing order ID, provide a valid ID next time",
 			});
 		const existingOrder: IOrder | null = await findOrder(orderId);
+		if (existingOrder === null) {
+			return res.status(400).json({ message: "Order not found" });
+		}
 		if (existingOrder?.status === "cancelled") {
 			return res.status(400).json({ message: "Order already cancelled" });
 		}
