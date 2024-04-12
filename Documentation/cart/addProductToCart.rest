@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 POST http://localhost:3000/api/cart/add/6618daa610f0be5949973476
+=======
+POST http://localhost:3000/api/cart/add/6617efb3088228361aa1fa0a
+>>>>>>> d936cae4c9ebc3e2490e86a67139399477778251
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MThkN2Y0NmU5NmJiZmZkOThjZjZlZCIsImlhdCI6MTcxMjkwNDI4NX0.Zzlq0oZst5-mRueC4zZmaEDzz8Nw-Fvp7DgAt_CYo5s
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MTkyZDVlMDU1NGJlMWZjM2Q2NjAzZiIsImlhdCI6MTcxMjkyNjA2N30.Oe4IvwI4IHXvTGfkv9gr6AM1JMgBITHmTo80QCZewlo
 
 ###

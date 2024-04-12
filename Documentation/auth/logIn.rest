@@ -2,17 +2,25 @@ POST http://localhost:3000/api/auth/login
 Content-Type: application/json
 
 {
+<<<<<<< HEAD
     "email": "cammelo@example.com", 
+=======
+    "email": "admin@vinylshop.com", 
+>>>>>>> d936cae4c9ebc3e2490e86a67139399477778251
     "password": "salvesalvino123" 
 }
 
 ###
 
 # mimmo access token (user):
-# eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MThkN2Y0NmU5NmJiZmZkOThjZjZlZCIsImlhdCI6MTcxMjkwNDI4NX0.Zzlq0oZst5-mRueC4zZmaEDzz8Nw-Fvp7DgAt_CYo5s
+# eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MTkzMTE2YWFhNmJlNzU3ZjU5NDVjOCIsImlhdCI6MTcxMjkyNzA1Mn0.aYZE1lfxZsAJ_L6yyL6XGs0SZBbQ2q9ssHcnUrg38_Y
 
 # superMimmo access token (admin):
+<<<<<<< HEAD
 # eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MThkODI3NmU5NmJiZmZkOThjZjZmMSIsImlhdCI6MTcxMjkwNDI1NH0.mPRywYcITGjkPMkglxisL_PjJC0oj14QMVTKpxuvQrc
 
 #cammelo user
 # eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MTkyYTA0NTRkZWMyMjE5ZGY3ZGEzOSIsImlhdCI6MTcxMjkyNTIwOH0.RzHygVFcHfi8Mk_THPhUSnsHRqZRNCd_0AiXCyRngYE
+=======
+# eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MTkzMTdhYWFhNmJlNzU3ZjU5NDVkMiIsImlhdCI6MTcxMjkyNzEyNX0.ja3l5qtBR87LZ1NjPBon4KPU6NsusHqSHuNB8J08f9U
+>>>>>>> d936cae4c9ebc3e2490e86a67139399477778251
