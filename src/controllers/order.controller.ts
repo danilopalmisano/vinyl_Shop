@@ -8,6 +8,7 @@ import {
 	getOrders,
 	getOrdersByCartIdHandler,
 	orderStatusHandler,
+	updateProductStock,
 } from "../services/order.service";
 import { ExtendedRequest } from "../middleware/authMiddleware";
 import {
@@ -16,9 +17,14 @@ import {
 	ZShippingSchema,
 } from "../validation/order.validation";
 import { fromZodError } from "zod-validation-error";
-import { ICart } from "../validation/cart.validation";
-import { subProductStockQuantityHandler } from "../services/product.service";
+import { ICart, ILineItem } from "../validation/cart.validation";
+import {
+	addProductStockQuantityHandler,
+	findProductById,
+	subProductStockQuantityHandler,
+} from "../services/product.service";
 import { findUserById } from "../services/auth.service";
+import mongoose from "mongoose";
 
 //show all orders
 export const showOrders = async (req: Request, res: Response) => {
@@ -46,9 +52,12 @@ export const getOrderById = async (req: ExtendedRequest, res: Response) => {
 		const userId = req.user?._id as string;
 		const currentUser = await findUserById(userId);
 		const orderId = req.params.id;
-		if (!orderId) {
-			return res.status(400).json({ message: "Missing order ID" });
-		}
+		const isValidId = mongoose.Types.ObjectId.isValid(orderId);
+		if (!isValidId)
+			return res.status(400).json({
+				message: "Missing order ID, provide a valid ID next time",
+			});
+
 		const order = await findOrder(orderId);
 
 		if (!order) {
@@ -79,23 +88,23 @@ export const createOrder = async (req: ExtendedRequest, res: Response) => {
 			const cartFromUserId = (await getUserCart(userId)) as ICart;
 			const userCartId = cartFromUserId._id?.toString();
 			if (cartFromUserId === null) {
-				return res.status(400).json({ message: 'Cart not found' });
+				return res.status(400).json({ message: "Cart not found" });
 			}
 			if (cartFromUserId.lines.length === 0) {
 				return res.status(400).json({
 					message:
-						'Cart is empty, cannot place order with empty cart',
+						"Cart is empty, cannot place order with empty cart",
 				});
 			}
 			if (userCartId === undefined) {
-				return res.status(400).json({ message: 'Cart not found' });
+				return res.status(400).json({ message: "Cart not found" });
 			}
 			const orderWithThisCartIDExist = await getOrdersByCartIdHandler(
-				userCartId
+				userCartId,
 			);
 			if (orderWithThisCartIDExist) {
 				return res.status(400).json({
-					message: 'Order with this cart already exist',
+					message: "Order with this cart already exist",
 				});
 			}
 			const validationError = ZShippingSchema.safeParse(body);
@@ -113,12 +122,12 @@ export const createOrder = async (req: ExtendedRequest, res: Response) => {
 			for (const line of cartFromUserId?.lines || []) {
 				await subProductStockQuantityHandler(
 					line.productId,
-					line.quantity
+					line.quantity,
 				);
 			}
-
+			await updateProductStock(cartFromUserId, "out of stock");
 			const realPrice = await calculateTotalCheckDataFromDB(
-				cartFromUserId.lines
+				cartFromUserId.lines,
 			);
 			if (realPrice instanceof Error) {
 				return res.status(400).json(realPrice.message);
@@ -131,7 +140,14 @@ export const createOrder = async (req: ExtendedRequest, res: Response) => {
 			};
 			const newOrder = await createOrderHandler(orderData);
 			await emptyUserCart(userId);
-			res.status(200).json(newOrder);
+			const formattedOrder: IFormattedOrders = {
+				_id: newOrder._id,
+				totalPrice: newOrder.totalPrice,
+				status: newOrder.status,
+				shippingAddress: newOrder.shippingAddress,
+				cart: newOrder.cart,
+			};
+			return res.status(200).json(formattedOrder);
 		}
 	} catch (error) {
 		res.status(500).json(error);
@@ -142,6 +158,11 @@ export const createOrder = async (req: ExtendedRequest, res: Response) => {
 export const updateOrderStatus = async (req: Request, res: Response) => {
 	try {
 		const orderId = req.params.id;
+		const isValidId = mongoose.Types.ObjectId.isValid(orderId);
+		if (!isValidId)
+			return res.status(400).json({
+				message: "Missing order ID, provide a valid ID next time",
+			});
 		const existingOrder = await findOrder(orderId);
 		if (existingOrder === null) {
 			return res.status(400).json({ message: "Order not found" });
@@ -152,7 +173,7 @@ export const updateOrderStatus = async (req: Request, res: Response) => {
 			orderStatus: orderStatus?.status,
 		});
 	} catch (error) {
-		res.status(400).json(error);
+		res.status(500).json({ message: "internal server error" });
 	}
 };
 
@@ -160,19 +181,41 @@ export const updateOrderStatus = async (req: Request, res: Response) => {
 export const deletedOrderStatus = async (req: Request, res: Response) => {
 	try {
 		const orderId = req.params.id;
+		const isValidId = mongoose.Types.ObjectId.isValid(orderId);
+		if (!isValidId)
+			return res.status(400).json({
+				message: "Missing order ID, provide a valid ID next time",
+			});
 		const existingOrder: IOrder | null = await findOrder(orderId);
 		if (existingOrder?.status === "cancelled") {
 			return res.status(400).json({ message: "Order already cancelled" });
 		}
 
 		const orderStatus = await orderStatusHandler(orderId, "cancelled");
-		//to implement to re-add quantity to stock after deleted an order
+		//update product stock quantity back to original value after order is cancelled
+		const lineItems = existingOrder?.cart.lines;
+		if (lineItems) {
+			for (const lineItem of lineItems) {
+				const productId = lineItem.productId;
+				const quantity = lineItem.quantity;
+				const product = await findProductById(productId);
+				if (product) {
+					//update stock quantity
+					await addProductStockQuantityHandler(productId, quantity);
+				}
+			}
+		}
+		await updateProductStock(existingOrder?.cart as ICart, "in stock");
+		if (orderStatus === null) {
+			return res.status(400).json({ message: "Order not found" });
+		}
+
 		res.status(200).json({
 			message: "Order status updated successfully",
 			orderStatus: orderStatus?.status,
 		});
 	} catch (error) {
-		res.status(400).json(error);
+		res.status(500).json({ message: "internal server error" });
 	}
 };
 

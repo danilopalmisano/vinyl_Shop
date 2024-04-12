@@ -1,4 +1,4 @@
 GET http://localhost:3000/api/cart
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MTUyMGU3MDI2NDViZThjNzdmZjY0MCIsImlhdCI6MTcxMjg1OTg5OH0.Roy7mMKTrpHsygeBnvWMz46W7qH-81N9XWJWlzsgsI8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MThkN2Y0NmU5NmJiZmZkOThjZjZlZCIsImlhdCI6MTcxMjkwNDI4NX0.Zzlq0oZst5-mRueC4zZmaEDzz8Nw-Fvp7DgAt_CYo5s
 
 ###

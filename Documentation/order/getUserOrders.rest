@@ -1,2 +1,0 @@
-GET http://localhost:3000/api/orders
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MTUyMGU3MDI2NDViZThjNzdmZjY0MCIsImlhdCI6MTcxMjg1OTg5OH0.Roy7mMKTrpHsygeBnvWMz46W7qH-81N9XWJWlzsgsI8

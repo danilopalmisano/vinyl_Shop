@@ -1,5 +1,3 @@
-POST http://localhost:3000/api/cart/add/6618d95a6e96bbffd98cf702
-Content-Type: application/json
+DELETE http://localhost:3000/api/cart/remove/6618e916d338b99cb09e9e79
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MThkN2Y0NmU5NmJiZmZkOThjZjZlZCIsImlhdCI6MTcxMjkwNDI4NX0.Zzlq0oZst5-mRueC4zZmaEDzz8Nw-Fvp7DgAt_CYo5s
-
 ###

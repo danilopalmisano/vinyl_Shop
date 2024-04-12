@@ -68,16 +68,22 @@ export const checkProductStock = async (
 ): Promise<Boolean | Error> => {
 	for (const line of cartFromUserId?.lines || []) {
 		const product = await findProductById(line.productId);
-		if (product?.stockQuantity! <= 0) {
-			await setProductStockStatusHandler(line.productId);
+		if (product?.stockQuantity! < line.quantity) {
 			return new Error(
 				`Product with id ${line.productId} is either out of stock or we don' t have enough please check stock quantity or contact us for more information on large orders`,
 			);
 		}
-		if (product?.stockQuantity! < line.quantity) {
-			return new Error(
-				`Not enough stock for product with id ${line.productId}`,
-			);
+	}
+	return true;
+};
+export const updateProductStock = async (
+	cartFromUserId: ICart,
+	status: string,
+): Promise<Boolean | Error> => {
+	for (const line of cartFromUserId?.lines || []) {
+		const product = await findProductById(line.productId);
+		if (product?.stockQuantity! <= 0) {
+			await setProductStockStatusHandler(line.productId, status);
 		}
 	}
 	return true;

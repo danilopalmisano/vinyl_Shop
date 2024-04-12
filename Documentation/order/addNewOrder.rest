@@ -1,6 +1,6 @@
 POST http://localhost:3000/api/orders
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MTdlYmNkMDg4MjI4MzYxYWExZjlmMCIsImlhdCI6MTcxMjg0MzkxOX0.OsuMAnTZLg7GPNbO_JHMSQzJUGeYf7G-t6VHybI0ZYw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MThkN2Y0NmU5NmJiZmZkOThjZjZlZCIsImlhdCI6MTcxMjkwNDI4NX0.Zzlq0oZst5-mRueC4zZmaEDzz8Nw-Fvp7DgAt_CYo5s
 
 {
 		"name": "Mimmo",

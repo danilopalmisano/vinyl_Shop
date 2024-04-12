@@ -1,12 +1,12 @@
 POST http://localhost:3000/api/products
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MTUzZTFlMmQ5NGFjMjZhYTk3NGFlYiIsImlhdCI6MTcxMjg1OTkzN30.dZ1R_uB9plOGO_4II8b2RM2ILapM0DGzDn4T0wMCIcA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MThkODI3NmU5NmJiZmZkOThjZjZmMSIsImlhdCI6MTcxMjkwNDI1NH0.mPRywYcITGjkPMkglxisL_PjJC0oj14QMVTKpxuvQrc
 
 {
-    "name": "lp3",
+    "name": "lp3.5",
     "description": "description3",
-    "price": 15.20,
+    "price": 50.87,
     "stockQuantity": 20,
     "stockStatus": "in stock",
-    "category": ["hip-hop","techno"]
+    "category": ["folk","techno"]
 }

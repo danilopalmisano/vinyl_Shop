@@ -13,6 +13,7 @@ import {
 } from "../validation/product.validation";
 import { fromZodError } from "zod-validation-error";
 import { Product } from "../models/product.model";
+import mongoose from "mongoose";
 
 //retrieve all products
 export const showProducts = async (req: Request, res: Response) => {
@@ -86,9 +87,19 @@ export const addProduct = async (req: Request, res: Response) => {
 			});
 		}
 		const product = await createProduct(validationError.data);
-		res.status(201).json(product);
+		const formattedProduct: IFormattedProduct = {
+			_id: product._id,
+			name: product.name,
+			description: product.description,
+			price: product.price,
+			images: product.images,
+			stockQuantity: product.stockQuantity,
+			stockStatus: product.stockStatus,
+			category: product.category,
+		};
+		res.status(201).json(formattedProduct);
 	} catch (error) {
-		return res.status(500).json({ message: 'internal server error' });
+		return res.status(500).json({ message: "internal server error" });
 	}
 };
 
@@ -96,33 +107,60 @@ export const addProduct = async (req: Request, res: Response) => {
 export const updateProduct = async (req: Request, res: Response) => {
 	try {
 		const _id = req.params.id;
-
 		const body = req.body;
+		const isValidId = mongoose.Types.ObjectId.isValid(_id);
+		if (!isValidId)
+			return res.status(400).json({
+				message:
+					"Product id is not valid, please provide a valid product id",
+			});
+
 		const validationError = ZOptionalProductSchema.safeParse(body);
 		if (!validationError.success) {
 			return res
 				.status(400)
 				.json(fromZodError(validationError.error).message);
 		}
-		const product = await upProduct(_id, validationError.data);
+		await upProduct(_id, validationError.data);
+
+		const product = await findProductById(_id);
 		if (!product) {
-			return res.status(404).json({ message: 'product not found' });
+			return res.status(404).json({
+				message: "can not update a product that is not on the database",
+			});
 		}
-		res.status(200).json({
-			message: 'product updated successfully',
-			product,
+		const formattedProduct: IFormattedProduct = {
+			_id: product._id,
+			name: product.name,
+			description: product.description,
+			price: product.price,
+			images: product.images,
+			stockQuantity: product.stockQuantity,
+			stockStatus: product.stockStatus,
+			category: product.category,
+		};
+		return res.status(200).json({
+			message: "product updated successfully",
+			formattedProduct,
 		});
 	} catch (error) {
-		return res.status(500).json({ message: 'internal server error' });
+		return res.status(500).json({ message: "internal server error" });
 	}
 };
 
 //allow Admin to delete a product
 export const deleteProduct = async (req: Request, res: Response) => {
 	try {
-		const product = await delProduct(req.params.id);
+		const _id = req.params.id;
+		const isValidId = mongoose.Types.ObjectId.isValid(_id);
+		if (!isValidId)
+			return res.status(400).json({
+				message:
+					"Product id is not valid, please provide a valid product id",
+			});
+		await delProduct(_id);
 		res.status(200).json({ message: "product deleted successfully" });
 	} catch (error) {
-		return res.status(404).json({ message: "product not found" });
+		return res.status(500).json({ message: "internal server error" });
 	}
 };

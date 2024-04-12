@@ -7,8 +7,10 @@ export const getProducts = async (): Promise<IProduct[]> => {
 };
 
 //find Product by id
-export const findProductById = async (id: string): Promise<IProduct | null> => {
-	return await Product.findById(id);
+export const findProductById = async (
+	_id: string,
+): Promise<IProduct | null> => {
+	return await Product.findById(_id);
 };
 
 //add Product (by Admin)
@@ -19,7 +21,7 @@ export const createProduct = async (product: IProduct): Promise<IProduct> => {
 //update Product (by Admin)
 export const upProduct = async (
 	_id: string,
-	product: IOptionalProduct
+	product: IOptionalProduct,
 ): Promise<Partial<IProduct | null>> => {
 	return await Product.findByIdAndUpdate(_id, product, { new: true });
 };
@@ -49,27 +51,18 @@ export const addProductStockQuantityHandler = async (
 	return await Product.findByIdAndUpdate(
 		productId,
 		{ $inc: { stockQuantity: delta } },
-		{ new: true }
+		{ new: true },
 	);
 };
 
 //Updates the stock status of a product based on its current stock quantity
 export const setProductStockStatusHandler = async (
 	productId: string,
+	status: string,
 ): Promise<IProduct | null> => {
-	return await Product.findByIdAndUpdate(
-		productId,
-		{
-			$set: {
-				stockStatus: {
-					$cond: {
-						if: { $eq: ["$stockQuantity", 0] },
-						then: "out of stock",
-						else: "in stock",
-					},
-				},
-			},
-		},
+	return await Product.findOneAndUpdate(
+		{ _id: productId },
+		{ $set: { stockStatus: status } },
 		{ new: true },
 	);
 };
