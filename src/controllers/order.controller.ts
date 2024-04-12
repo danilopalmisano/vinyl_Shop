@@ -193,22 +193,6 @@ export const deletedOrderStatus = async (req: Request, res: Response) => {
 
 		const orderStatus = await orderStatusHandler(orderId, "cancelled");
 		//update product stock quantity back to original value after order is cancelled
-		const lineItems = existingOrder?.cart.lines;
-		if (lineItems) {
-			for (const lineItem of lineItems) {
-				const productId = lineItem.productId;
-				const quantity = lineItem.quantity;
-				const product = await findProductById(productId);
-				if (product) {
-					//update stock quantity
-					await addProductStockQuantityHandler(productId, quantity);
-				}
-			}
-		}
-		await updateProductStock(existingOrder?.cart as ICart, "in stock");
-		if (orderStatus === null) {
-			return res.status(400).json({ message: "Order not found" });
-		}
 
 		res.status(200).json({
 			message: "Order status updated successfully",
