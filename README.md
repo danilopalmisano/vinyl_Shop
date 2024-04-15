@@ -4,33 +4,36 @@
 
 ## <b> **Table of Contents** </b>
 
--   [Vinyl Shop](#vinyl-shop)
-    -   [ **Table of Contents** ](#-table-of-contents-)
-        -   [Installation:](#installation)
-        -   [No dotenv Installation Required:](#no-dotenv-installation-required)
-        -   [Setting up .env file](#setting-up-env-file)
-        -   [Generating Random Keys](#generating-random-keys)
-        -   [Initial Setup:](#initial-setup)
-        -   [Transpilation (Run it the first time only):](#transpilation-run-it-the-first-time-only)
-        -   [Running the Server:](#running-the-server)
--   [Features](#features)
-    -   [ **Authentication API** ](#-authentication-api-)
-    -   [ **Products API** ](#-products-api-)
-    -   [ **Cart API** ](#-cart-api-)
-    -   [ **Order API** ](#-order-api-)
--   [Interfaces](#interfaces)
-    -   [ User Interface ](#-user-interface-)
-        -   [Login Interface](#login-interface)
-        -   [Role Enum](#role-enum)
-    -   [ Product Interface ](#-product-interface-)
-        -   [StockStatus Enum](#stockstatus-enum)
-    -   [ Cart Interface ](#-cart-interface-)
-    -   [ LineItem Interface ](#-lineitem-interface-)
-    -   [ Order Interface ](#-order-interface-)
-        -   [Status Enum](#status-enum)
-    -   [ Decode Token Interface ](#-decode-token-interface-)
--   [Project Tree](#project-tree)
--   [Credits](#credits)
+- [Vinyl Shop](#vinyl-shop)
+  - [ **Table of Contents** ](#-table-of-contents-)
+    - [Installation:](#installation)
+    - [No dotenv Installation Required:](#no-dotenv-installation-required)
+    - [Setting up .env file](#setting-up-env-file)
+    - [Generating Random Keys](#generating-random-keys)
+    - [Initial Setup:](#initial-setup)
+    - [Transpilation (Run it the first time only):](#transpilation-run-it-the-first-time-only)
+    - [Running the Server:](#running-the-server)
+- [Used Technologies](#used-technologies)
+- [Features](#features)
+  - [ **Documentation** ](#-documentation-)
+  - [ **Authentication API** ](#-authentication-api-)
+  - [ **Products API** ](#-products-api-)
+  - [ **Cart API** ](#-cart-api-)
+  - [ **Order API** ](#-order-api-)
+- [Interfaces](#interfaces)
+  - [ User Interface ](#-user-interface-)
+    - [Login Interface](#login-interface)
+    - [Role Enum](#role-enum)
+  - [ Product Interface ](#-product-interface-)
+    - [StockStatus Enum](#stockstatus-enum)
+  - [ Cart Interface ](#-cart-interface-)
+  - [ LineItem Interface ](#-lineitem-interface-)
+  - [ Order Interface ](#-order-interface-)
+    - [Status Enum](#status-enum)
+  - [ Decoded Token Interface ](#-decoded-token-interface-)
+- [To be implemented](#to-be-implemented)
+- [Credits](#credits)
+
 
 ### Installation:
 
@@ -95,7 +98,20 @@ From then on, you can use the single command:
 to both transpile your code and start the server using Nodemon.
 Nodemon will automatically watch for changes in your TypeScript files and restart the server whenever you make modifications, streamlining your development workflow.
 
+# Used Technologies
+* Zod: a simple, lightweight and powerful schema validation library. Its main benefit is that it provides a very intuitive and easy to use API, making it straightforward to define complex validations.
+
+* Zod-Validation-Error: a library that simplifies the process of handling validation errors thrown by Zod. It provides a more user-friendly way to deal with errors, making it easier to display them in the UI.
+* Mongoose: a MongoDB object modeling tool that makes working with MongoDB easy and simple. One of its main benefits is that it provides a lot of built-in functionality that makes CRUD operations very easy, such as validation, pre/post hooks and more.
+* Bcrypt: a password hashing library that provides a simple and secure way to store passwords in a database. Its main benefit is that it uses a slow and expensive hashing algorithm, making it more secure against brute-force attacks.
+
 # Features
+
+## <b> **Documentation** </b>
+Please check the [Documentation](./Documentation/) for an example on how the API calls work; to use them you need to download [Rest client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) or launch VS Code Quick Open (Ctrl+P), paste the following command, and press enter.
+
+    ext install humao.rest-client
+
 
 ## <b> **Authentication API** </b>
 
@@ -121,7 +137,7 @@ Nodemon will automatically watch for changes in your TypeScript files and restar
 
 | Feature                       | Endpoint                    |  Coded?  | PrivateRoutes |
 | ----------------------------- | :-------------------------- | :------: | :-----------: |
-| **Show Current User Cart**    | GET /api/cart               | &#10004; |     USER      |
+| **Show Current User Cart**    | GET /api/cart               | &#10004; |   USER/ADMIN  |
 | **Add one Item to a line**    | POST /api/cart/add/:id      | &#10004; |     USER      |
 | **Remove one Item to a line** | DELETE /api/cart/remove/:id | &#10004; |     USER      |
 | **Remove Cart**               | DELETE /api/cart/clear      | &#10004; |     USER      |
@@ -227,11 +243,16 @@ Nodemon will automatically watch for changes in your TypeScript files and restar
 | 4     | Delivered     |
 | 5     | Canceled      |
 
-## <b> Decode Token Interface </b>
+## <b> Decoded Token Interface </b>
 
 | Key | Type   |
 | --- | ------ |
 | id  | String |
+
+# To be implemented
+* A system of jwt refresh token, since at the moment for pure testing reason token doesn't expire;
+* whitelist to be a collection in the database, so the list can expand or shrink for the customer needs.
+* known bug: at the moment it's possible to make an order with the same product for only a customer; it will be fixed ASAP!
 
 # Credits
 
